@@ -1,0 +1,29 @@
+.dticon img {
+    cursor: pointer;
+    width: 22px;
+    height: auto;
+}
+
+.dticon {
+    width: 90px;
+}
+
+td.colRed {
+    color: red;
+}
+
+td.colGreen {
+    color: green;
+}
+
+.imgGal {
+    border: 1px solid #D7D8DA!important;
+}
+
+.deleteImage {
+    cursor: pointer;
+}
+
+.req {
+	color: red;
+}
