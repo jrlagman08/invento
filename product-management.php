@@ -145,13 +145,6 @@
                           <div class="card-body">
                             <div class="row" id="imgGallery">
                               <!---- insert image gallery ---->
-							  <div id="" class="col-sm-3 imgGal">
-								<a data-toggle="lightbox" data-title="" data-gallery="gallery">
-									<img src="" class="img-fluid mb-2" alt="" />
-								</a>
-								<a href="" data-id="" data-name="" class="deleteImage">Remove</a>
-							  </div>
-							  
                             </div>
                           </div>
                         </div>
@@ -710,6 +703,14 @@ $(document).ready(function() {
 			"<'row px-3 pb-3'<'col-sm-5'i><'col-sm-7'p>>",
 	});
 	
+	//--- Lightbox ---//
+	$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+	  event.preventDefault();
+	  $(this).ekkoLightbox({
+		alwaysShowClose: true
+	  });
+	});
+	
 	//-- QR Code --//
 	var qrcode = new QRCode(document.getElementById("qrcode"), {
 		width : 120,
@@ -904,14 +905,23 @@ $(document).ready(function() {
 	}
 	
 	//--- Load Gallery Images ---//
-	function loadImgData(){
-		$.post( "data/prod_load_image.php", { prodID: "1"}, function(result,status){
-			table.clear();
+	function loadImgData(IDprod,imgGal){
+		$.post( "data/prod_load_image.php", { prodID: IDprod}, function(result,status){
+			var imgDiv = document.getElementById(imgGal);
+			var concat = "";
+			imgDiv.innerHTML = '';
+			
+			
 			var obj = JSON.parse(result);
 			 obj.forEach(function(item) {
-				table.row.add([item.name, item.cat, "<div class='btn-group btn-group-sm'><a href='#' class='btn btn-warning updateItem' data-id="+item.subCategoryID+" data-toggle='modal' data-target='#modal-default-update' title='Update'><i class='fas fa-pen'></i></a><a href='#' class='btn btn-danger deleteItem' data-id="+item.subCategoryID+" title='Delete'><i class='fas fa-trash'></i></a></div>"])
+				concat += "<div class='col-sm-3 imgGal' style='text-align: center;'><a href='"+item.path+"' data-toggle='lightbox' data-title='Preview' data-gallery='gallery'><img src='"+item.path+"' class='img-fluid mb-2' /></a>";
+				if (imgGal == "imgGallery") { 
+					concat += "<br/><a data-id='"+item.imgID+"' data-name='"+item.imgID+"' class='deleteImage'>Remove</a>"; 
+				}
+				concat += "</div>";
+				imgDiv.innerHTML = concat;
 			})
-			table.draw(false);
+
 		});
 	}
 
@@ -984,6 +994,7 @@ $(document).ready(function() {
 					successNotifNoload("Product Image successfully uploaded!");
 					
 					// DISPLAY IMAGES HERE
+					loadImgData(document.getElementById("prodID").value,"imgGallery");
 				},
 				error: function(xhr, status, error) {
 					errorNotifNoload("Upload failed or invalid file format! Please try it again.");
@@ -1036,6 +1047,7 @@ $(document).ready(function() {
 				$("#discountedPrice").text(obj[0].discountedPrice);
 				$("#viewID").attr('data-id',dataID);
 				makeQrCodeView(obj[0].prodCode);
+				loadImgData(dataID,"imgGalleryView");
 			});
 			
 	});
@@ -1077,6 +1089,7 @@ $(document).ready(function() {
 		    var dataID = $(this).attr('data-id'); //get the item ID
 			$("#prodID").val(dataID);
 			document.getElementById("uploadImgGal").src = "img/default-company.jpg";
+			loadImgData(dataID,"imgGallery");
 			
 	});
 	
