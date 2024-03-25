@@ -916,7 +916,7 @@ $(document).ready(function() {
 			 obj.forEach(function(item) {
 				concat += "<div class='col-sm-3 imgGal' style='text-align: center;'><a href='"+item.path+"' data-toggle='lightbox' data-title='Preview' data-gallery='gallery'><img src='"+item.path+"' class='img-fluid mb-2' /></a>";
 				if (imgGal == "imgGallery") { 
-					concat += "<br/><a data-id='"+item.imgID+"' data-name='"+item.imgID+"' class='deleteImage'>Remove</a>"; 
+					concat += "<br/><a data-id='"+item.imgID+"' data-name='"+item.imgID+"' class='deleteImage'>Removed</a>"; 
 				}
 				concat += "</div>";
 				imgDiv.innerHTML = concat;
@@ -1125,6 +1125,26 @@ $(document).ready(function() {
 					errorNotifNoload(result);
 				}
 			});
+			
+		}
+		
+	});
+	
+	//--- Delete Image ---//	
+	$(document).delegate(".deleteImage", "click", function() {
+
+		if (confirm("Are you sure you want to delete this image?")) {
+		    var dataID = $(this).attr('data-id'); //get the item ID
+			alert(dataID);
+			/*$.post( "data/common_delete_data.php", { tblName: "tbl_product", fieldName: "prodID", notifName: "Product", itemID: dataID }, function(result,status){
+				if (result == 'Success'){
+					loadData();
+					successNotifNoload("Product successfully deleted!");
+				} 
+				else {
+					errorNotifNoload(result);
+				}
+			});*/
 			
 		}
 		
