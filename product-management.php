@@ -1136,7 +1136,7 @@ $(document).ready(function() {
 		if (confirm("Are you sure you want to delete this image?")) {
 		    var dataID = $(this).attr('data-id'); //get the item ID
 			alert(dataID);
-			/*$.post( "data/common_delete_data.php", { tblName: "tbl_product", fieldName: "prodID", notifName: "Product", itemID: dataID }, function(result,status){
+			$.post( "data/prod_delete_image.php", { tblName: "tbl_product", fieldName: "prodID", notifName: "Product", itemID: dataID }, function(result,status){
 				if (result == 'Success'){
 					loadData();
 					successNotifNoload("Product successfully deleted!");
@@ -1144,7 +1144,7 @@ $(document).ready(function() {
 				else {
 					errorNotifNoload(result);
 				}
-			});*/
+			});
 			
 		}
 		
