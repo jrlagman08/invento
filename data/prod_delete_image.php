@@ -7,11 +7,13 @@
 	$tblName = $_POST['tblName'];
 	$fieldName = $_POST['fieldName'];
 	$notifName = $_POST['notifName'];
-	$itemID = $_POST['itemID'];
+	$imgID = $_POST['itemID'];
+	$imgPath = $_POST['itemPath'];
 
-	$sql = "DELETE FROM {$tblName} WHERE {$fieldName} = '{$itemID}' LIMIT 1";
+	$sql = "DELETE FROM {$tblName} WHERE {$fieldName} = '{$imgID}' LIMIT 1";
 	$result = mysqli_query($connection, $sql);
 	confirm_query($result);
+	unlink("../".$imgPath);
 
 	if($result){
 		echo "Success";
