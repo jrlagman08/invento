@@ -1101,7 +1101,7 @@ $(document).ready(function() {
 				loadData();
 				document.getElementById("UpdateForm").reset();
 				$("#modal-default-update").modal("hide");
-				successNotifNoload("Order successfully updated!");
+				successNotifNoload("Product successfully updated!");
 			}
 			else {
 				errorNotifNoload(result);

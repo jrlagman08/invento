@@ -53,7 +53,7 @@
                 <div class="row">
                   <div class="col-6">
                     <h3 class="card-title">
-                      <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal" data-target="#modal-default-add"><i class="fas fa-plus"></i> &nbsp;Add Repackage</button>
+                      <button type="button" id="addRepackageId" class="btn btn-block btn-success btn-sm" data-toggle="modal" data-target="#modal-default-add"><i class="fas fa-plus"></i> &nbsp;Add Repackage</button>
                     </h3>
                   </div>
                   <div class="col-6" style="text-align: right;">
@@ -172,7 +172,8 @@
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
 
-            <form id="productAddForm">
+            <form id="RepackForm" action="data/repack_add.php" method="post">
+			<input type="hidden" id="prodList" name="prodList" />
               <div class="modal-header">
                 <h4 class="modal-title">Add Repackage</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -187,7 +188,7 @@
                     <div class="form-group">
                       <label>Product Code</label>
                       <div class="row">
-                        <div class="col-sm-10"><input type="text" id="addprodCode" class="form-control" placeholder="Enter product code" required></div>
+                        <div class="col-sm-10"><input type="text" id="addprodCode" name="addprodCode" class="form-control" placeholder="Enter product code" required></div>
                         <div class="col-sm-2"><button type="button" id="addgenQRCode" class="btn btn-default" data-toggle="modal" data-target="#modal-default-qrcode">QRCode</button></div>
                       </div>
                     </div>
@@ -195,7 +196,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Product Name</label>
-                      <input type="text" id="addprodName" class="form-control" placeholder="Enter product name" required>
+                      <input type="text" id="addprodName" name="addprodName" class="form-control" placeholder="Enter product name" required>
                     </div>
                   </div>
                 </div>
@@ -205,13 +206,13 @@
                     <!-- textarea -->
                     <div class="form-group">
                       <label>Short Description</label>
-                      <textarea id="addshortDesc" class="form-control" rows="3" placeholder="Enter short description" required></textarea>
+                      <textarea id="addshortDesc" name="addshortDesc" class="form-control" rows="3" placeholder="Enter short description" required></textarea>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Full Description</label>
-                      <textarea id="addfullDesc" class="form-control" rows="3" placeholder="Enter full description"></textarea>
+                      <textarea id="addfullDesc" name="addfullDesc" class="form-control" rows="3" placeholder="Enter full description"></textarea>
                     </div>
                   </div>
                 </div>
@@ -301,7 +302,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="addorigPrice" class="form-control" onKeyPress="if(this.value.length==7) return false;" required>
+                      <input type="text" id="addorigPrice" name="addorigPrice" class="form-control" onKeyPress="if(this.value.length==7) return false;" required>
                     </div>
                   </div>
                   <div class="col-sm-4">
@@ -310,7 +311,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="addsalePrice" class="form-control" onKeyPress="if(this.value.length==7) return false;">
+                      <input type="text" id="addsalePrice" name="addsalePrice" class="form-control" onKeyPress="if(this.value.length==7) return false;">
                     </div>
                   </div>
                   <div class="col-sm-4">
@@ -319,7 +320,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="adddiscountedPrice" class="form-control" onKeyPress="if(this.value.length==7) return false;">
+                      <input type="text" id="adddiscountedPrice" name="adddiscountedPrice" class="form-control" onKeyPress="if(this.value.length==7) return false;">
                     </div>
                   </div>
                 </div>
@@ -330,7 +331,7 @@
                     <!-- checkbox -->
                     <div class="form-group">
                       <div class="form-check">
-                        <input class="form-check-input" id="addstoreVisible" type="checkbox" checked>
+                        <input class="form-check-input" id="addstoreVisible" name="addstoreVisible" type="checkbox" checked>
                         <label class="form-check-label"><b>Store Visible</b></label>
                       </div>
                     </div>
@@ -362,14 +363,14 @@
                           </div>
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <button type="button" class="btn btn-block btn-success" id="addProd">Add/Save Product</button>
+                              <button type="button" id="addSaveProductId" class="btn btn-block btn-success">Add/Save Product</button>
                             </div>
                           </div>
                         </div>
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body p-0">
-                        <table class="table">
+                        <table class="table" id="productTableId">
                           <thead>
                           <tr>
                             <th>Product Name</th>
@@ -770,3 +771,169 @@
 	//Footer
 	include_once('includes/footer.php'); 
 ?>
+
+<!-- Custom script -->
+<script>
+
+	const productList = new Map();
+
+	//--- Datatable settings ---//
+	table = $("#loadDataTable").DataTable({
+	  "iDisplayLength": 25,
+	  "responsive": true, 
+	  "autoWidth": false,
+	  columnDefs: [{
+		  orderable: false,
+		  targets: "no-sort"
+	  }],
+	  "dom": 
+			"<'row px-3 pt-3'<'col-sm-6'l><'col-sm-6'f>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row px-3 pb-3'<'col-sm-5'i><'col-sm-7'p>>",
+	});
+	
+	//--- Load data to table ---//
+	function loadData(){
+		$.post( "data/common_load_data.php", { tblName: "tbl_rack", sortName: "name" }, function(result,status){
+			table.clear();
+			var obj = JSON.parse(result);
+			 obj.forEach(function(item) {
+				table.row.add([item.name, "<div class='btn-group btn-group-sm'><a href='#' class='btn btn-warning updateItem' data-id="+item.rackID+" data-name="+item.name+" data-toggle='modal' data-target='#modal-default-update' title='Update'><i class='fas fa-pen'></i></a><a href='#' class='btn btn-danger deleteItem' data-id="+item.rackID+" title='Delete'><i class='fas fa-trash'></i></a></div>"])
+			})
+			table.draw(false);
+		});
+	}
+	
+	//--- Initial load data to table ---//
+	loadData();
+
+	//--- Add Item ---//	
+	$("#RepackForm").submit(function(){
+		const prodListStr = JSON.stringify(Array.from(productList.entries()));
+		var prdList = document.getElementById('prodList').value = prodListStr;
+		
+		console.log('done', prodListStr);
+		$.post( $("#RepackForm").attr("action"), $("#RepackForm :input").serializeArray(), function(result){
+			if (result == 'Success'){
+				loadData();
+				document.getElementById("RepackForm").reset();
+				$("#modal-default-add").modal("hide");
+				successNotifNoload("Repackage successfully saved!");
+			}
+			else {
+				errorNotifNoload(result);
+			}
+		});
+		
+		return false;
+	});
+	
+	//--- Get Item to Update ---//	
+	$(document).delegate(".updateItem", "click", function() {
+
+		    var dataID = $(this).attr('data-id'); //get the item ID
+			var dataName = $(this).attr('data-name'); //get the item Name
+			$("#updateID").val(dataID);
+			$("#updateinputName").val(dataName);
+			
+	});
+	
+	//--- Update Item ---//	
+	$("#UpdateForm").submit(function(){
+
+		$.post( $("#UpdateForm").attr("action"), $("#UpdateForm :input").serializeArray(), function(result){
+			if (result == 'Success'){
+				loadData();
+				document.getElementById("UpdateForm").reset();
+				$("#modal-default-update").modal("hide");
+				successNotifNoload("Rack successfully updated!");
+			}
+			else {
+				errorNotifNoload(result);
+			}
+		});
+		
+		return false;
+	});
+	
+	
+	$("#addRepackageId").click(function(){
+		$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodCode" }, function(result,status){
+			var obj = JSON.parse(result);
+			obj.forEach(function(item) {
+				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodCode + "'>" + item.prodName + "</option>");
+			});
+			
+			 
+		});
+	});
+	
+	$("#addSaveProductId").click(function(){
+		console.log('productList', productList);
+	
+		var prod = document.getElementById('addProdItemName');
+		var selectedIndex = prod.selectedIndex;
+		var selectedProd = prod.options[selectedIndex].value;
+		var runbal = prod.options[selectedIndex].title;
+		
+		var addGroup = document.getElementById('addGroup').value;
+		var addQty = document.getElementById('addQty').value;
+            
+
+		if(productList.has(selectedProd)) {
+			alert(selectedProd + ' has been added already');
+		} else {
+			if(addGroup == "" || addQty == "") {
+				alert('Please enter value on either repack number and quantity fields');
+			} else if(runbal < addQty) {
+				alert('You have entered more than the remaining quantity');
+			} else {
+				
+				// aarom
+				
+				var runBalTotal = runbal - addQty;
+				const values = addGroup +"|"+ addQty + "|" + runBalTotal;
+				productList.set(selectedProd, values);
+				// Append the new row to the table body
+				var newRow = "<tr><td>" + selectedProd + "</td><td>" + addGroup + "</td><td>" + addQty + "</td><td><button id=" +selectedProd + " onclick='removeRow(this)'>Delete</button></td></tr>";
+				$("#productTableId tbody").append(newRow);
+			}
+			
+		}
+         
+		// save in array
+		// put that array in form hidden
+	});
+	
+	function removeRow(button) {
+    // Get the row to be removed
+    var row = button.parentNode.parentNode;
+	console.log('row', row, button.id, productList);
+	productList.delete(button.id);
+	console.log(productList);
+    
+    // Remove the row from the table
+    row.parentNode.removeChild(row);
+}
+	
+	
+	//--- Delete Item ---//	
+	$(document).delegate(".deleteItem", "click", function() {
+
+		if (confirm("Are you sure you want to delete this record?")) {
+		    var dataID = $(this).attr('data-id'); //get the item ID
+			$.post( "data/common_delete_data.php", { tblName: "tbl_rack", fieldName: "rackID", notifName: "Rack", itemID: dataID }, function(result,status){
+				if (result == 'Success'){
+					loadData();
+					successNotifNoload("Rack successfully deleted!");
+				} 
+				else {
+					errorNotifNoload(result);
+				}
+			});
+			
+		}
+		
+	});
+  
+</script>
