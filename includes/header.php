@@ -216,22 +216,13 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item <?php echo ($curpage =='suppliers.php') ? 'menu-open' : ''; ?>">
-            <a href="#" class="nav-link <?php echo ($curpage =='suppliers.php') ? 'active' : ''; ?>">
+		  <li class="nav-item">
+            <a href="user-management.php" class="nav-link <?php echo ($curpage =='suppliers.php') ? 'active' : ''; ?>">
               <i class="nav-icon fas fa-cart-plus"></i>
               <p>
-                Puchase Items
-                <i class="fas fa-angle-left right"></i>
+                Suppliers
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="suppliers.php" class="nav-link <?php echo ($curpage =='suppliers.php') ? 'active' : ''; ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Suppliers</p>
-                </a>
-              </li>
-            </ul>
           </li>
           <li class="nav-item <?php echo ($curpage =='inventory-counts.php' || $curpage =='item-received.php') ? 'menu-open' : ''; ?>">
             <a href="#" class="nav-link <?php echo ($curpage =='inventory-counts.php' || $curpage =='item-received.php') ? 'active' : ''; ?>">
@@ -279,34 +270,13 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item <?php echo ($curpage =='user-management.php' || $curpage =='user-rights.php' || $curpage =='user-access.php') ? 'menu-open' : ''; ?>">
-            <a href="#" class="nav-link <?php echo ($curpage =='user-management.php' || $curpage =='user-rights.php' || $curpage =='user-access.php') ? 'active' : ''; ?>">
+		  <li class="nav-item">
+            <a href="user-management.php" class="nav-link <?php echo ($curpage =='user-management.php') ? 'active' : ''; ?>">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                Users
-                <i class="fas fa-angle-left right"></i>
+                User List
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="user-management.php" class="nav-link <?php echo ($curpage =='user-management.php') ? 'active' : ''; ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>User List</p>
-                </a>
-              </li>
-              <!--<li class="nav-item">
-                <a href="user-rights.php" class="nav-link <?php echo ($curpage =='user-rights.php') ? 'active' : ''; ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>User Rights</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="user-access.php" class="nav-link <?php echo ($curpage =='user-access.php') ? 'active' : ''; ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>User Access</p>
-                </a>
-              </li>-->
-            </ul>
           </li>
           <li class="nav-item <?php echo ($curpage =='company-info.php' || $curpage =='department.php' || $curpage =='classification.php' || $curpage =='color.php' || $curpage =='season.php' || $curpage =='uom.php' || $curpage =='warehouse.php' || $curpage =='rack.php' || $curpage =='categories.php' || $curpage =='sub-categories.php' || $curpage =='payment.php') ? 'menu-open' : ''; ?>">
             <a href="#" class="nav-link <?php echo ($curpage =='company-info.php' || $curpage =='department.php' || $curpage =='classification.php' || $curpage =='color.php' || $curpage =='season.php' || $curpage =='uom.php' || $curpage =='warehouse.php' || $curpage =='rack.php' || $curpage =='categories.php' || $curpage =='sub-categories.php' || $curpage =='payment.php') ? 'active' : ''; ?>">

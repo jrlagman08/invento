@@ -110,7 +110,7 @@
 
             <form id="galleryAddForm" method="post">
               <div class="modal-header">
-                <h4 class="modal-title">Product Image</h4>
+                <h4 class="modal-title">Product Images</h4>
                 <button type="button" id="closegalleryAddFormX" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -822,22 +822,66 @@ $(document).ready(function() {
 			 obj.forEach(function(item) {
 				 $("#addCategory").append("<option value='"+item.categoryID+"'>"+item.name+"</option>");
 				 $("#updateCategory").append("<option value='"+item.categoryID+"'>"+item.name+"</option>");
-			})
+			});
+			loadSubCat($("#addCategory").val());
 		});
 	}
 	
 	//--- Load Sub Category data ---//
-	function loadSubCat(){
-		$.post( "data/common_load_data.php", { tblName: "tbl_subcategory", sortName: "name" }, function(result,status){
+	function loadSubCat(selCat){
+		$.post( "data/common_load_subcat.php", { tblName: "tbl_subcategory", sortName: "name", selCat: selCat }, function(result,status){
 			var obj = JSON.parse(result);
 			 $("#addsubCategory").empty();
 			 $("#updatesubCategory").empty();
 			 obj.forEach(function(item) {
 				 $("#addsubCategory").append("<option value='"+item.subCategoryID+"'>"+item.name+"</option>");
 				 $("#updatesubCategory").append("<option value='"+item.subCategoryID+"'>"+item.name+"</option>");
-			})
+			});
+			$("#addsubCategory").append("<option value='0'>N/A</option>");
+			$("#updatesubCategory").append("<option value='0'>N/A</option>");
 		});
 	}
+	
+	//--- Set selected Sub Category based on Category ---//
+	function setSubCat(selCat,selSubCat){
+		$.post( "data/common_load_subcat.php", { tblName: "tbl_subcategory", sortName: "name", selCat: selCat }, function(result,status){
+			
+			var obj = JSON.parse(result);
+			 $("#updatesubCategory").empty();
+			 obj.forEach(function(item) {
+				 if(selSubCat == item.subCategoryID){
+					 $("#updatesubCategory").append("<option value='"+item.subCategoryID+"' selected>"+item.name+"</option>");
+				 } else {
+					 $("#updatesubCategory").append("<option value='"+item.subCategoryID+"'>"+item.name+"</option>");
+				 }
+			});
+			$("#updatesubCategory").append("<option value='0'>N/A</option>");
+		});
+	}
+	
+	//--- Sub Category load when change Category on ADD PRODUCT ---//	
+	$("#addCategory").change(function(e) {
+		$.post( "data/common_load_subcat.php", { tblName: "tbl_subcategory", sortName: "name", selCat: $("#addCategory").val() }, function(result,status){
+			var obj = JSON.parse(result);
+			 $("#addsubCategory").empty();
+			 obj.forEach(function(item) {
+				 $("#addsubCategory").append("<option value='"+item.subCategoryID+"'>"+item.name+"</option>");
+			});
+			$("#addsubCategory").append("<option value='0'>N/A</option>");
+		});
+	});
+	
+	//--- Sub Category load when change Category on UPDATE PRODUCT ---//	
+	$("#updateCategory").change(function(e) {
+		$.post( "data/common_load_subcat.php", { tblName: "tbl_subcategory", sortName: "name", selCat: $("#updateCategory").val() }, function(result,status){
+			var obj = JSON.parse(result);
+			 $("#updatesubCategory").empty();
+			 obj.forEach(function(item) {
+				 $("#updatesubCategory").append("<option value='"+item.subCategoryID+"'>"+item.name+"</option>");
+			});
+			$("#updatesubCategory").append("<option value='0'>N/A</option>");
+		});
+	});
 	
 	//--- Load Warehouse data ---//
 	function loadWarehouse(){
@@ -934,7 +978,6 @@ $(document).ready(function() {
 	//--- Initial load Dropdown data ---//
 	loadClassification();
 	loadCategory();
-	loadSubCat();
 	loadWarehouse();
 	loadRack();
 	loadSeason();
@@ -949,7 +992,6 @@ $(document).ready(function() {
 					loadData();
 					loadClassification();
 					loadCategory();
-					loadSubCat();
 					loadWarehouse();
 					loadRack();
 					loadSeason();
@@ -1077,7 +1119,7 @@ $(document).ready(function() {
 				$("#updatesalePrice").val(obj[0].salePrice);
 				$("#updatediscountedPrice").val(obj[0].discountedPrice);
 				$("#updateID").val(dataID);
-				
+				setSubCat(obj[0].categoryID,obj[0].subCategoryID);
 				makeQrCode("updateprodCode","updategenQRCode");
 			});
 			
