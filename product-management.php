@@ -645,7 +645,7 @@
                     <label>Discounted Price</label>: ₱<span id="discountedPrice"></span>
                   </div>
                 </div>
-
+				<br/>
                 <div class="row">
                   <div class="col-12">
                     <div class="card card-primary">

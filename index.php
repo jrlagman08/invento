@@ -40,7 +40,7 @@
                 <p>Products</p>
               </div>
               <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="nav-icon fas fa-shopping-bag"></i>
               </div>
               <a href="product-management.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -55,7 +55,7 @@
                 <p>Orders</p>
               </div>
               <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="nav-icon fas fa-cubes"></i>
               </div>
               <a href="order-list.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -70,7 +70,7 @@
                 <p>Customers</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="nav-icon fas fa-users"></i>
               </div>
               <a href="customers.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -85,7 +85,7 @@
                 <p>Suppliers</p>
               </div>
               <div class="icon">
-                <i class="ion ion-cube"></i>
+                <i class="nav-icon fas fa-cart-plus"></i>
               </div>
               <a href="suppliers.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>

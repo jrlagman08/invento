@@ -217,7 +217,7 @@
             </ul>
           </li>
 		  <li class="nav-item">
-            <a href="user-management.php" class="nav-link <?php echo ($curpage =='suppliers.php') ? 'active' : ''; ?>">
+            <a href="suppliers.php" class="nav-link <?php echo ($curpage =='suppliers.php') ? 'active' : ''; ?>">
               <i class="nav-icon fas fa-cart-plus"></i>
               <p>
                 Suppliers

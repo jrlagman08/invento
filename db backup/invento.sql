@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Apr 13, 2024 at 04:02 PM
+-- Host: 127.0.0.1:3306
+-- Generation Time: Apr 14, 2024 at 04:12 PM
 -- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- PHP Version: 8.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,10 +27,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `tbl_category`
 --
 
-CREATE TABLE `tbl_category` (
-  `categoryID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_category`;
+CREATE TABLE IF NOT EXISTS `tbl_category` (
+  `categoryID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`categoryID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_category`
@@ -48,10 +50,12 @@ INSERT INTO `tbl_category` (`categoryID`, `name`) VALUES
 -- Table structure for table `tbl_classification`
 --
 
-CREATE TABLE `tbl_classification` (
-  `classificationID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_classification`;
+CREATE TABLE IF NOT EXISTS `tbl_classification` (
+  `classificationID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`classificationID`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_classification`
@@ -71,10 +75,12 @@ INSERT INTO `tbl_classification` (`classificationID`, `name`) VALUES
 -- Table structure for table `tbl_color`
 --
 
-CREATE TABLE `tbl_color` (
-  `colorID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_color`;
+CREATE TABLE IF NOT EXISTS `tbl_color` (
+  `colorID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`colorID`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_color`
@@ -95,8 +101,9 @@ INSERT INTO `tbl_color` (`colorID`, `name`) VALUES
 -- Table structure for table `tbl_companyinfo`
 --
 
-CREATE TABLE `tbl_companyinfo` (
-  `companyinfoID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_companyinfo`;
+CREATE TABLE IF NOT EXISTS `tbl_companyinfo` (
+  `companyinfoID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
   `mobile` varchar(50) NOT NULL,
@@ -108,8 +115,9 @@ CREATE TABLE `tbl_companyinfo` (
   `zipcode` int NOT NULL,
   `country` varchar(50) NOT NULL,
   `logo` varchar(250) NOT NULL,
-  `website` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `website` varchar(50) NOT NULL,
+  PRIMARY KEY (`companyinfoID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_companyinfo`
@@ -124,13 +132,16 @@ INSERT INTO `tbl_companyinfo` (`companyinfoID`, `name`, `email`, `mobile`, `phon
 -- Table structure for table `tbl_count`
 --
 
-CREATE TABLE `tbl_count` (
-  `countID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_count`;
+CREATE TABLE IF NOT EXISTS `tbl_count` (
+  `countID` int NOT NULL AUTO_INCREMENT,
   `countDate` datetime NOT NULL,
   `userID` int NOT NULL,
   `notes` text NOT NULL,
-  `isPosted` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `isPosted` tinyint(1) NOT NULL,
+  PRIMARY KEY (`countID`),
+  KEY `userID` (`userID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_count`
@@ -145,13 +156,17 @@ INSERT INTO `tbl_count` (`countID`, `countDate`, `userID`, `notes`, `isPosted`) 
 -- Table structure for table `tbl_countitem`
 --
 
-CREATE TABLE `tbl_countitem` (
-  `countitemID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_countitem`;
+CREATE TABLE IF NOT EXISTS `tbl_countitem` (
+  `countitemID` int NOT NULL AUTO_INCREMENT,
   `countID` int NOT NULL,
   `prodID` int NOT NULL,
   `systemCount` int NOT NULL,
-  `count` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `count` int NOT NULL,
+  PRIMARY KEY (`countitemID`),
+  KEY `prodID` (`prodID`),
+  KEY `inventorycountID` (`countID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_countitem`
@@ -166,8 +181,9 @@ INSERT INTO `tbl_countitem` (`countitemID`, `countID`, `prodID`, `systemCount`, 
 -- Table structure for table `tbl_customer`
 --
 
-CREATE TABLE `tbl_customer` (
-  `customerID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_customer`;
+CREATE TABLE IF NOT EXISTS `tbl_customer` (
+  `customerID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
   `mobile` varchar(50) NOT NULL,
@@ -180,8 +196,9 @@ CREATE TABLE `tbl_customer` (
   `country` varchar(50) NOT NULL,
   `econtactPerson` varchar(100) NOT NULL,
   `econtactEmail` varchar(50) NOT NULL,
-  `econtactMobile` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `econtactMobile` varchar(50) NOT NULL,
+  PRIMARY KEY (`customerID`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_customer`
@@ -206,10 +223,12 @@ INSERT INTO `tbl_customer` (`customerID`, `name`, `email`, `mobile`, `phone`, `a
 -- Table structure for table `tbl_department`
 --
 
-CREATE TABLE `tbl_department` (
-  `departmentID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_department`;
+CREATE TABLE IF NOT EXISTS `tbl_department` (
+  `departmentID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`departmentID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_department`
@@ -226,11 +245,14 @@ INSERT INTO `tbl_department` (`departmentID`, `name`) VALUES
 -- Table structure for table `tbl_image`
 --
 
-CREATE TABLE `tbl_image` (
-  `imgID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_image`;
+CREATE TABLE IF NOT EXISTS `tbl_image` (
+  `imgID` int NOT NULL AUTO_INCREMENT,
   `prodID` int NOT NULL,
-  `path` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `path` varchar(200) NOT NULL,
+  PRIMARY KEY (`imgID`),
+  KEY `prodID` (`prodID`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_image`
@@ -240,7 +262,8 @@ INSERT INTO `tbl_image` (`imgID`, `prodID`, `path`) VALUES
 (2, 2, 'img/gallery/616563ballon-service-icon.png'),
 (3, 1, 'img/gallery/490646optimum-performance-&-operartion.jpg'),
 (4, 1, 'img/gallery/182424flexibility-line.jpg'),
-(5, 1, 'img/gallery/43754cost-efficient-line.jpg');
+(5, 1, 'img/gallery/43754cost-efficient-line.jpg'),
+(7, 3, 'img/gallery/676435icon-bins-simultaneously.jpg');
 
 -- --------------------------------------------------------
 
@@ -248,8 +271,9 @@ INSERT INTO `tbl_image` (`imgID`, `prodID`, `path`) VALUES
 -- Table structure for table `tbl_order`
 --
 
-CREATE TABLE `tbl_order` (
-  `orderID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_order`;
+CREATE TABLE IF NOT EXISTS `tbl_order` (
+  `orderID` int NOT NULL AUTO_INCREMENT,
   `orderDate` datetime NOT NULL,
   `orderNum` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `customerID` int NOT NULL,
@@ -258,8 +282,12 @@ CREATE TABLE `tbl_order` (
   `paymentref` varchar(50) NOT NULL,
   `amountPaid` decimal(10,0) NOT NULL,
   `grandTotal` decimal(10,0) NOT NULL,
-  `balance` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `balance` decimal(10,0) NOT NULL,
+  PRIMARY KEY (`orderID`),
+  KEY `customerID` (`customerID`),
+  KEY `userID` (`userID`),
+  KEY `paymentID` (`paymentID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_order`
@@ -275,16 +303,20 @@ INSERT INTO `tbl_order` (`orderID`, `orderDate`, `orderNum`, `customerID`, `user
 -- Table structure for table `tbl_orderitem`
 --
 
-CREATE TABLE `tbl_orderitem` (
-  `orderitemID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_orderitem`;
+CREATE TABLE IF NOT EXISTS `tbl_orderitem` (
+  `orderitemID` int NOT NULL AUTO_INCREMENT,
   `orderID` int NOT NULL,
   `prodID` int NOT NULL,
   `origPrice` decimal(10,0) NOT NULL,
   `salePrice` decimal(10,0) NOT NULL,
   `discountedPrice` decimal(10,0) NOT NULL,
   `discountAmount` decimal(10,0) NOT NULL,
-  `qty` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `qty` int NOT NULL,
+  PRIMARY KEY (`orderitemID`),
+  KEY `orderID` (`orderID`),
+  KEY `prodID` (`prodID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_orderitem`
@@ -299,10 +331,12 @@ INSERT INTO `tbl_orderitem` (`orderitemID`, `orderID`, `prodID`, `origPrice`, `s
 -- Table structure for table `tbl_payment`
 --
 
-CREATE TABLE `tbl_payment` (
-  `paymentID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_payment`;
+CREATE TABLE IF NOT EXISTS `tbl_payment` (
+  `paymentID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`paymentID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_payment`
@@ -318,8 +352,9 @@ INSERT INTO `tbl_payment` (`paymentID`, `name`) VALUES
 -- Table structure for table `tbl_product`
 --
 
-CREATE TABLE `tbl_product` (
-  `prodID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_product`;
+CREATE TABLE IF NOT EXISTS `tbl_product` (
+  `prodID` int NOT NULL AUTO_INCREMENT,
   `categoryID` int NOT NULL,
   `subCategoryID` int NOT NULL,
   `prodCode` varchar(10) NOT NULL,
@@ -338,8 +373,16 @@ CREATE TABLE `tbl_product` (
   `lowQty` int NOT NULL DEFAULT '0',
   `highQty` int NOT NULL DEFAULT '0',
   `runningBal` int NOT NULL DEFAULT '0',
-  `isRepackage` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `isRepackage` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`prodID`),
+  KEY `warehouseID` (`warehouseID`),
+  KEY `categoryID` (`categoryID`),
+  KEY `subCategoryID` (`subCategoryID`),
+  KEY `classificationID` (`classificationID`),
+  KEY `colorID` (`colorID`),
+  KEY `seasonID` (`seasonID`),
+  KEY `uomID` (`uomID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_product`
@@ -347,9 +390,10 @@ CREATE TABLE `tbl_product` (
 
 INSERT INTO `tbl_product` (`prodID`, `categoryID`, `subCategoryID`, `prodCode`, `prodName`, `shortDesc`, `fullDesc`, `classificationID`, `colorID`, `rackID`, `seasonID`, `uomID`, `warehouseID`, `origPrice`, `salePrice`, `discountedPrice`, `lowQty`, `highQty`, `runningBal`, `isRepackage`) VALUES
 (1, 2, 1, 'PR111', 'Test Prod 111', 'Short Desc', 'Full Desc', 4, 14, 1, 1, 3, 1, '20', '15', '5', 50, 80, 60, 0),
-(2, 4, 0, 'SAM123', 'Same Same', 'descd', 'desc', 5, 23, 2, 2, 3, 2, '10', '5', '5', 50, 80, 0, 0),
-(3, 3, 3, 'RP333', 'Repack 3', 'repack 3', 'repack 3', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 80, 0, 1),
-(4, 3, 4, 'GMA123', 'SubCat Test', 'SubCat Test', 'SubCat Test', 1, 14, 1, 3, 3, 1, '100', '50', '50', 60, 60, 0, 0);
+(2, 4, 0, 'SAM123', 'Same Same', 'descd', 'desc', 5, 23, 2, 2, 3, 2, '10', '5', '5', 50, 80, 38, 0),
+(3, 3, 3, 'RP333', 'Repack 3', 'repack 3', 'repack 3', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 80, 100, 1),
+(4, 3, 4, 'GMA123', 'SubCat Test', 'SubCat Test', 'SubCat Test', 1, 14, 1, 3, 3, 1, '100', '50', '50', 60, 60, 30, 0),
+(10, 3, 3, 'RP14Apr', 'RP14Apr', 'RP14Apr', 'RP14Apr', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 60, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -357,10 +401,12 @@ INSERT INTO `tbl_product` (`prodID`, `categoryID`, `subCategoryID`, `prodCode`, 
 -- Table structure for table `tbl_rack`
 --
 
-CREATE TABLE `tbl_rack` (
-  `rackID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_rack`;
+CREATE TABLE IF NOT EXISTS `tbl_rack` (
+  `rackID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`rackID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_rack`
@@ -376,14 +422,17 @@ INSERT INTO `tbl_rack` (`rackID`, `name`) VALUES
 -- Table structure for table `tbl_received`
 --
 
-CREATE TABLE `tbl_received` (
-  `receivedID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_received`;
+CREATE TABLE IF NOT EXISTS `tbl_received` (
+  `receivedID` int NOT NULL AUTO_INCREMENT,
   `receivedDate` datetime NOT NULL,
   `userID` int NOT NULL,
   `notes` text NOT NULL,
   `isPosted` tinyint(1) NOT NULL,
-  `grandTotal` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `grandTotal` decimal(10,0) NOT NULL,
+  PRIMARY KEY (`receivedID`),
+  KEY `userID` (`userID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_received`
@@ -398,13 +447,17 @@ INSERT INTO `tbl_received` (`receivedID`, `receivedDate`, `userID`, `notes`, `is
 -- Table structure for table `tbl_receiveditem`
 --
 
-CREATE TABLE `tbl_receiveditem` (
-  `receiveditemID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_receiveditem`;
+CREATE TABLE IF NOT EXISTS `tbl_receiveditem` (
+  `receiveditemID` int NOT NULL AUTO_INCREMENT,
   `receivedID` int NOT NULL,
   `prodID` int NOT NULL,
   `origPrice` decimal(10,0) NOT NULL,
-  `qty` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `qty` int NOT NULL,
+  PRIMARY KEY (`receiveditemID`),
+  KEY `receivedID` (`receivedID`),
+  KEY `prodID` (`prodID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_receiveditem`
@@ -419,12 +472,24 @@ INSERT INTO `tbl_receiveditem` (`receiveditemID`, `receivedID`, `prodID`, `origP
 -- Table structure for table `tbl_repackageitem`
 --
 
-CREATE TABLE `tbl_repackageitem` (
-  `repackageitemID` int NOT NULL,
-  `prodID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_repackageitem`;
+CREATE TABLE IF NOT EXISTS `tbl_repackageitem` (
+  `repackageitemID` int NOT NULL AUTO_INCREMENT,
+  `repackage_prodID` int NOT NULL,
+  `single_prodID` int NOT NULL,
   `prodGroup` int NOT NULL,
-  `prodQty` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `prodQty` int NOT NULL,
+  PRIMARY KEY (`repackageitemID`),
+  KEY `prodID` (`single_prodID`),
+  KEY `repackageID` (`repackage_prodID`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `tbl_repackageitem`
+--
+
+INSERT INTO `tbl_repackageitem` (`repackageitemID`, `repackage_prodID`, `single_prodID`, `prodGroup`, `prodQty`) VALUES
+(16, 10, 2, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -432,10 +497,12 @@ CREATE TABLE `tbl_repackageitem` (
 -- Table structure for table `tbl_season`
 --
 
-CREATE TABLE `tbl_season` (
-  `seasonID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_season`;
+CREATE TABLE IF NOT EXISTS `tbl_season` (
+  `seasonID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`seasonID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_season`
@@ -452,11 +519,14 @@ INSERT INTO `tbl_season` (`seasonID`, `name`) VALUES
 -- Table structure for table `tbl_subcategory`
 --
 
-CREATE TABLE `tbl_subcategory` (
-  `subCategoryID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_subcategory`;
+CREATE TABLE IF NOT EXISTS `tbl_subcategory` (
+  `subCategoryID` int NOT NULL AUTO_INCREMENT,
   `categoryID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`subCategoryID`),
+  KEY `categoryID` (`categoryID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_subcategory`
@@ -473,8 +543,9 @@ INSERT INTO `tbl_subcategory` (`subCategoryID`, `categoryID`, `name`) VALUES
 -- Table structure for table `tbl_supplier`
 --
 
-CREATE TABLE `tbl_supplier` (
-  `supplierID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_supplier`;
+CREATE TABLE IF NOT EXISTS `tbl_supplier` (
+  `supplierID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
   `mobile` varchar(50) NOT NULL,
@@ -487,8 +558,9 @@ CREATE TABLE `tbl_supplier` (
   `country` varchar(50) NOT NULL,
   `econtactPerson` varchar(100) NOT NULL,
   `econtactEmail` varchar(50) NOT NULL,
-  `econtactMobile` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `econtactMobile` varchar(50) NOT NULL,
+  PRIMARY KEY (`supplierID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_supplier`
@@ -505,13 +577,16 @@ INSERT INTO `tbl_supplier` (`supplierID`, `name`, `email`, `mobile`, `phone`, `a
 -- Table structure for table `tbl_supplieritem`
 --
 
-CREATE TABLE `tbl_supplieritem` (
-  `supplieritemID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_supplieritem`;
+CREATE TABLE IF NOT EXISTS `tbl_supplieritem` (
+  `supplieritemID` int NOT NULL AUTO_INCREMENT,
   `supplierID` int NOT NULL,
   `prodCode` varchar(10) NOT NULL,
   `prodName` varchar(100) NOT NULL,
   `prodDetails` varchar(200) NOT NULL,
-  `origPrice` decimal(10,0) NOT NULL
+  `origPrice` decimal(10,0) NOT NULL,
+  PRIMARY KEY (`supplieritemID`),
+  KEY `supplierID` (`supplierID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -520,10 +595,12 @@ CREATE TABLE `tbl_supplieritem` (
 -- Table structure for table `tbl_uom`
 --
 
-CREATE TABLE `tbl_uom` (
-  `uomID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_uom`;
+CREATE TABLE IF NOT EXISTS `tbl_uom` (
+  `uomID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`uomID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_uom`
@@ -538,14 +615,17 @@ INSERT INTO `tbl_uom` (`uomID`, `name`) VALUES
 -- Table structure for table `tbl_user`
 --
 
-CREATE TABLE `tbl_user` (
-  `userID` int NOT NULL,
+DROP TABLE IF EXISTS `tbl_user`;
+CREATE TABLE IF NOT EXISTS `tbl_user` (
+  `userID` int NOT NULL AUTO_INCREMENT,
   `email` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `pword` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `fname` varchar(25) NOT NULL,
   `lname` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `departmentID` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `departmentID` int NOT NULL,
+  PRIMARY KEY (`userID`),
+  KEY `departmentID` (`departmentID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_user`
@@ -561,10 +641,12 @@ INSERT INTO `tbl_user` (`userID`, `email`, `pword`, `fname`, `lname`, `departmen
 -- Table structure for table `tbl_warehouse`
 --
 
-CREATE TABLE `tbl_warehouse` (
-  `warehouseID` int NOT NULL,
-  `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `tbl_warehouse`;
+CREATE TABLE IF NOT EXISTS `tbl_warehouse` (
+  `warehouseID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`warehouseID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_warehouse`
@@ -573,325 +655,6 @@ CREATE TABLE `tbl_warehouse` (
 INSERT INTO `tbl_warehouse` (`warehouseID`, `name`) VALUES
 (1, 'Warehouse 1'),
 (2, 'Warehouse 2');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `tbl_category`
---
-ALTER TABLE `tbl_category`
-  ADD PRIMARY KEY (`categoryID`);
-
---
--- Indexes for table `tbl_classification`
---
-ALTER TABLE `tbl_classification`
-  ADD PRIMARY KEY (`classificationID`);
-
---
--- Indexes for table `tbl_color`
---
-ALTER TABLE `tbl_color`
-  ADD PRIMARY KEY (`colorID`);
-
---
--- Indexes for table `tbl_companyinfo`
---
-ALTER TABLE `tbl_companyinfo`
-  ADD PRIMARY KEY (`companyinfoID`);
-
---
--- Indexes for table `tbl_count`
---
-ALTER TABLE `tbl_count`
-  ADD PRIMARY KEY (`countID`),
-  ADD KEY `userID` (`userID`);
-
---
--- Indexes for table `tbl_countitem`
---
-ALTER TABLE `tbl_countitem`
-  ADD PRIMARY KEY (`countitemID`),
-  ADD KEY `prodID` (`prodID`),
-  ADD KEY `inventorycountID` (`countID`);
-
---
--- Indexes for table `tbl_customer`
---
-ALTER TABLE `tbl_customer`
-  ADD PRIMARY KEY (`customerID`);
-
---
--- Indexes for table `tbl_department`
---
-ALTER TABLE `tbl_department`
-  ADD PRIMARY KEY (`departmentID`);
-
---
--- Indexes for table `tbl_image`
---
-ALTER TABLE `tbl_image`
-  ADD PRIMARY KEY (`imgID`),
-  ADD KEY `prodID` (`prodID`);
-
---
--- Indexes for table `tbl_order`
---
-ALTER TABLE `tbl_order`
-  ADD PRIMARY KEY (`orderID`),
-  ADD KEY `customerID` (`customerID`),
-  ADD KEY `userID` (`userID`),
-  ADD KEY `paymentID` (`paymentID`);
-
---
--- Indexes for table `tbl_orderitem`
---
-ALTER TABLE `tbl_orderitem`
-  ADD PRIMARY KEY (`orderitemID`),
-  ADD KEY `orderID` (`orderID`),
-  ADD KEY `prodID` (`prodID`);
-
---
--- Indexes for table `tbl_payment`
---
-ALTER TABLE `tbl_payment`
-  ADD PRIMARY KEY (`paymentID`);
-
---
--- Indexes for table `tbl_product`
---
-ALTER TABLE `tbl_product`
-  ADD PRIMARY KEY (`prodID`),
-  ADD KEY `warehouseID` (`warehouseID`),
-  ADD KEY `categoryID` (`categoryID`),
-  ADD KEY `subCategoryID` (`subCategoryID`),
-  ADD KEY `classificationID` (`classificationID`),
-  ADD KEY `colorID` (`colorID`),
-  ADD KEY `seasonID` (`seasonID`),
-  ADD KEY `uomID` (`uomID`);
-
---
--- Indexes for table `tbl_rack`
---
-ALTER TABLE `tbl_rack`
-  ADD PRIMARY KEY (`rackID`);
-
---
--- Indexes for table `tbl_received`
---
-ALTER TABLE `tbl_received`
-  ADD PRIMARY KEY (`receivedID`),
-  ADD KEY `userID` (`userID`);
-
---
--- Indexes for table `tbl_receiveditem`
---
-ALTER TABLE `tbl_receiveditem`
-  ADD PRIMARY KEY (`receiveditemID`),
-  ADD KEY `receivedID` (`receivedID`),
-  ADD KEY `prodID` (`prodID`);
-
---
--- Indexes for table `tbl_repackageitem`
---
-ALTER TABLE `tbl_repackageitem`
-  ADD PRIMARY KEY (`repackageitemID`),
-  ADD KEY `prodID` (`prodID`);
-
---
--- Indexes for table `tbl_season`
---
-ALTER TABLE `tbl_season`
-  ADD PRIMARY KEY (`seasonID`);
-
---
--- Indexes for table `tbl_subcategory`
---
-ALTER TABLE `tbl_subcategory`
-  ADD PRIMARY KEY (`subCategoryID`),
-  ADD KEY `categoryID` (`categoryID`);
-
---
--- Indexes for table `tbl_supplier`
---
-ALTER TABLE `tbl_supplier`
-  ADD PRIMARY KEY (`supplierID`);
-
---
--- Indexes for table `tbl_supplieritem`
---
-ALTER TABLE `tbl_supplieritem`
-  ADD PRIMARY KEY (`supplieritemID`),
-  ADD KEY `supplierID` (`supplierID`);
-
---
--- Indexes for table `tbl_uom`
---
-ALTER TABLE `tbl_uom`
-  ADD PRIMARY KEY (`uomID`);
-
---
--- Indexes for table `tbl_user`
---
-ALTER TABLE `tbl_user`
-  ADD PRIMARY KEY (`userID`),
-  ADD KEY `departmentID` (`departmentID`);
-
---
--- Indexes for table `tbl_warehouse`
---
-ALTER TABLE `tbl_warehouse`
-  ADD PRIMARY KEY (`warehouseID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `tbl_category`
---
-ALTER TABLE `tbl_category`
-  MODIFY `categoryID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_classification`
---
-ALTER TABLE `tbl_classification`
-  MODIFY `classificationID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT for table `tbl_color`
---
-ALTER TABLE `tbl_color`
-  MODIFY `colorID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- AUTO_INCREMENT for table `tbl_companyinfo`
---
-ALTER TABLE `tbl_companyinfo`
-  MODIFY `companyinfoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_count`
---
-ALTER TABLE `tbl_count`
-  MODIFY `countID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_countitem`
---
-ALTER TABLE `tbl_countitem`
-  MODIFY `countitemID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_customer`
---
-ALTER TABLE `tbl_customer`
-  MODIFY `customerID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT for table `tbl_department`
---
-ALTER TABLE `tbl_department`
-  MODIFY `departmentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `tbl_image`
---
-ALTER TABLE `tbl_image`
-  MODIFY `imgID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `tbl_order`
---
-ALTER TABLE `tbl_order`
-  MODIFY `orderID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_orderitem`
---
-ALTER TABLE `tbl_orderitem`
-  MODIFY `orderitemID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_payment`
---
-ALTER TABLE `tbl_payment`
-  MODIFY `paymentID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `tbl_product`
---
-ALTER TABLE `tbl_product`
-  MODIFY `prodID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_rack`
---
-ALTER TABLE `tbl_rack`
-  MODIFY `rackID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `tbl_received`
---
-ALTER TABLE `tbl_received`
-  MODIFY `receivedID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_receiveditem`
---
-ALTER TABLE `tbl_receiveditem`
-  MODIFY `receiveditemID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_repackageitem`
---
-ALTER TABLE `tbl_repackageitem`
-  MODIFY `repackageitemID` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tbl_season`
---
-ALTER TABLE `tbl_season`
-  MODIFY `seasonID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_subcategory`
---
-ALTER TABLE `tbl_subcategory`
-  MODIFY `subCategoryID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_supplier`
---
-ALTER TABLE `tbl_supplier`
-  MODIFY `supplierID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_supplieritem`
---
-ALTER TABLE `tbl_supplieritem`
-  MODIFY `supplieritemID` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `tbl_uom`
---
-ALTER TABLE `tbl_uom`
-  MODIFY `uomID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `tbl_user`
---
-ALTER TABLE `tbl_user`
-  MODIFY `userID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `tbl_warehouse`
---
-ALTER TABLE `tbl_warehouse`
-  MODIFY `warehouseID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

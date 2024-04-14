@@ -52,7 +52,7 @@
                 <div class="row">
                   <div class="col-6">
                     <h3 class="card-title">
-                      <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal" data-target="#modal-default-add"><i class="fas fa-plus"></i> &nbsp;Add Repackage</button>
+                      <button type="button" id="addRepackageBtn" class="btn btn-block btn-success btn-sm" data-toggle="modal" data-target="#modal-default-add"><i class="fas fa-plus"></i> &nbsp;Add Repackage</button>
                     </h3>
                   </div>
                   <div class="col-6" style="text-align: right;">
@@ -195,7 +195,7 @@
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
 
-            <form id="AddForm" action="data/prod_add_data.php" method="post">
+            <form id="AddForm" action="data/repack_prod_add_data.php" method="post">
               <div class="modal-header">
                 <h4 class="modal-title">Add Repackage</h4>
                 <button type="button" id="closeAddFormX" class="close" data-dismiss="modal" aria-label="Close">
@@ -340,10 +340,59 @@
                     </div>
                   </div>
                 </div>
+				<!---- Add Product Items ---->
+				<br/>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h4 class="card-title">Product Item(s)</h4>
+                      </div>
+                      <div class="card-body">
+					  
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<select id="addProdItemName" class="form-control"></select>
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<input type="number" id="addGroup" name="addGroup" minlength="1" maxlength="5" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter group item by" min="0" max="90000" step="1">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<input type="number" id="addQty" name="addQty" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter quantity" min="0" max="9000000" step="1">
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<div class="form-group">
+										<button type="button" class="btn btn-block btn-success" id="addprodItemBtn" id="addprodItemBtn">Add Product Item</button>
+									</div>
+								</div>
+							</div>
+							<table class="table" id="addprodItemTbl">
+							  <thead>
+							  <tr>
+								<th>Product Name</th>
+								<th>Repack Group</th>
+								<th>Quantity</th>
+								<th style="width: 40px">Action</th>
+							  </tr>
+							  </thead>
+							  <tbody>
+							  </tbody>
+							</table>
 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				<!---- Add Product Items ---->
               </div>
               <div class="modal-footer justify-content-between">
-				<input id="isRepackage" name="isRepackage" class="form-control" type="hidden" value="1">
+				<input type="hidden" id="addprodList" name="addprodList" />
                 <button type="button" id="closeAddForm" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Add Repackage</button>
               </div>
@@ -512,6 +561,57 @@
                     </div>
                   </div>
                 </div>
+				
+				<!---- Update Product Items ---->
+				<br/>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h4 class="card-title">Product Item(s)</h4>
+                      </div>
+                      <div class="card-body">
+					  
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<select id="updateProdItemName" class="form-control"></select>
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<input type="number" id="updateGroup" name="updateGroup" minlength="1" maxlength="5" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter group item by" min="0" max="90000" step="1">
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<input type="number" id="updateQty" name="updateQty" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter quantity" min="0" max="9000000" step="1">
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<div class="form-group">
+										<button type="button" class="btn btn-block btn-success" id="updateprodItemBtn" id="updateprodItemBtn">Add Product Item</button>
+									</div>
+								</div>
+							</div>
+							<table class="table" id="updateprodItemTbl">
+							  <thead>
+							  <tr>
+								<th>Product Name</th>
+								<th>Repack Group</th>
+								<th>Quantity</th>
+								<th style="width: 40px">Action</th>
+							  </tr>
+							  </thead>
+							  <tbody id="updateprodItemTblBody">
+							  </tbody>
+							</table>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				<!---- Update Product Items ---->
 
               </div>
               <div class="modal-footer justify-content-between">
@@ -646,7 +746,7 @@
                     <label>Discounted Price</label>: ₱<span id="discountedPrice"></span>
                   </div>
                 </div>
-
+				<br/>
                 <div class="row">
                   <div class="col-12">
                     <div class="card card-primary">
@@ -661,7 +761,41 @@
                     </div>
                   </div>
                 </div>
+				
+				<!---- View Product Items ---->
+				<br/>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h4 class="card-title">Product Item(s)</h4>
+                      </div>
+                      <div class="card-body">
+					  
+							<table class="table">
+							  <thead>
+							  <tr>
+								<th>Product Code</th>
+								<th>Product Name</th>
+								<th>Repack Group</th>
+								<th>Quantity</th>
+							  </tr>
+							  </thead>
+							  <tbody id="viewprodItemTblBody">
+								<tr>
+									<td>Anfanna Pantyhose</td>
+									<td>1</td>
+									<td>1</td>
+								</tr>
+							  </tbody>
+							</table>
 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				<!---- View Product Items ---->
+				
               </div>
               <div class="modal-footer justify-content-between">
                 <button type="button" id="closeViewForm" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -688,6 +822,9 @@
 <!-- Custom script -->
 <script>
 $(document).ready(function() {
+	
+	const addprodMap = new Map();
+	const updateprodMap = new Map();
 
 	//--- Datatable settings ---//
 	table = $("#loadDataTable").DataTable({
@@ -988,6 +1125,9 @@ $(document).ready(function() {
 	//--- Add Item ---//	
 	$("#AddForm").submit(function(){
 		
+		const addprodListStr = JSON.stringify(Array.from(addprodMap.entries()));
+		document.getElementById("addprodList").value = addprodListStr;
+		
 		$.post( $("#AddForm").attr("action"), $("#AddForm :input").serializeArray(), function(result){
 				if (result == 'Success'){
 					loadData();
@@ -1093,12 +1233,75 @@ $(document).ready(function() {
 				loadImgData(dataID,"imgGalleryView");
 			});
 			
+			$.post( "data/proditem_get_data.php", { itemID: dataID }, function(result,status){
+				var obj = JSON.parse(result);
+				$("#viewprodItemTblBody").empty();
+				obj.forEach(function(item) {
+					 $("#viewprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.prodGroup + "</td><td>" + item.prodQty + "</td></tr>");
+				});
+			});
+			
+			
 	});
+	
+	
+	// Load Product List Dropdown
+	function reloadProdItemDD () {
+		$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodName", isRepackage: 1 }, function(result,status){
+			var obj = JSON.parse(result);
+			$("#updateProdItemName").empty();
+			obj.forEach(function(item) {
+				 $("#updateProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+			});
+		});
+	}
+	
+	// Check updated Running Balance of the Repackage
+	function checkBalRepackage () {
+		$.post( "data/prod_get_data.php", { itemID: $("#updateID").val() }, function(result){
+			var obj = JSON.parse(result);
+			$("#updaterunningBal").val(obj[0].runningBal);
+		});
+	}
+	
+	// Load Product List Table
+	function reloadProdListTable (dataID) {
+		$.post( "data/proditem_get_data.php", { itemID: dataID }, function(result,status){
+			var obj = JSON.parse(result);
+			$("#updateprodItemTblBody").empty();
+			var qtyTemp = "";
+			obj.forEach(function(item) {
+				qtyTemp = item.prodQty;
+				const values = item.prodGroup +"|"+ item.prodQty + "|" + item.runningBal +"|"+ item.single_prodID;
+				updateprodMap.set(item.single_prodID, values);
+				$("#updateprodItemTblBody").append("<tr><td>" + item.prodName + "</td><td>" + item.prodGroup + "</td><td>" + item.prodQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.single_prodID + " data-id=" + item.repackageitemID + "><i class='fas fa-trash'></i></a></td></tr>");
+			});
+			
+			let mapSize = updateprodMap.size;
+			if (mapSize > 0) {
+				$("#updateQty").prop("readonly", true);
+				$("#updateQty").val(qtyTemp);
+			} else {
+				$("#updateQty").val('');
+				$("#updateQty").prop("readonly", false);
+			}
+		});	
+		
+		console.log(updateprodMap.size);
+	}
 	
 	//--- Get Item to Update ---//	
 	$(document).delegate(".updateItem", "click", function() {
 
 		    var dataID = $(this).attr('data-id'); //get the item ID
+			
+			// Clear Maps
+			updateprodMap.clear();
+			// Load Product List Dropdown
+			reloadProdItemDD();
+			// Load Product List Table
+			reloadProdListTable(dataID);
+		
 			$.post( "data/prod_get_data.php", { itemID: dataID }, function(result){
 				var obj = JSON.parse(result);
 				$("#updateprodCode").val(obj[0].prodCode);
@@ -1263,6 +1466,182 @@ $(document).ready(function() {
 		  });
 		});
 	}
+	
+	//-- Load product item list when clicking Add Repackage button --//
+	$("#addRepackageBtn").click(function(){
+		// Clear Maps
+		addprodMap.clear();
+		
+		$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodName", isRepackage: 1 }, function(result,status){
+			var obj = JSON.parse(result);
+			$("#addProdItemName").empty();
+			obj.forEach(function(item) {
+				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+			});
+		});
+		
+	});
+	
+	//-- Insert Product Item in the Table (Add) --//
+	$("#addprodItemBtn").click(function(){
+	
+		var prod = document.getElementById('addProdItemName');
+		var selectedIndex = prod.selectedIndex;
+		var selectedProd = prod.options[selectedIndex].value;
+		var runbal = prod.options[selectedIndex].title;
+		var addGroup = document.getElementById('addGroup').value;
+		var addQty = document.getElementById('addQty').value;
+		var selprodname = prod.options[selectedIndex].getAttribute("data-name");
+            
+		if (addprodMap.has(selectedProd)) {
+			errorNotifNoload(selprodname + " has been added already!");
+		} else {
+			if(addGroup == "" || addQty == "") {
+				errorNotifNoload("Please enter value on either group item and quantity fields!");
+			} else if (runbal < (addGroup*addQty)) {
+				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
+			} else {
+				var runBalTotal = runbal - (addGroup*addQty);
+				const values = addGroup +"|"+ addQty + "|" + runBalTotal +"|"+ selectedProd;
+				addprodMap.set(selectedProd, values);
+				// Append the new row to the product item table
+				var newRow = "<tr><td>" + selprodname + "</td><td>" + addGroup + "</td><td>" + addQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
+				$("#addprodItemTbl tbody").append(newRow);
+				
+				$("#addGroup").val('');
+				let mapSize = addprodMap.size;
+				if (mapSize > 0) {
+					$("#addQty").prop("readonly", true);
+				} else {
+					$("#addQty").val('');
+					$("#addQty").prop("readonly", false);
+				}
+				
+				successNotifNoload("Product Item successfully added!");
+			}
+		}
+		
+		//console.log([...addprodMap.entries()]);
+		
+	});
+	
+	
+	//-- Insert Product Item in the Table (Update) --//
+	$("#updateprodItemBtn").click(function(){
+	
+		var prod = document.getElementById('updateProdItemName');
+		var selectedIndex = prod.selectedIndex;
+		var selectedProd = prod.options[selectedIndex].value;
+		var runbal = prod.options[selectedIndex].title;
+		var updateGroup = document.getElementById('updateGroup').value;
+		var updateQty = document.getElementById('updateQty').value;
+		var selprodname = prod.options[selectedIndex].getAttribute("data-name");
+            
+		if (updateprodMap.has(selectedProd)) {
+			errorNotifNoload(selprodname + " has been added already!");
+		} else {
+			if(updateGroup == "" || updateQty == "") {
+				errorNotifNoload("Please enter value on either group item and quantity fields!");
+			} else if (runbal < (updateGroup*updateQty)) {
+				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
+			} else {
+				var runBalTotal = runbal - (updateGroup*updateQty);
+				const values = updateGroup +"|"+ updateQty + "|" + runBalTotal +"|"+ selectedProd;
+				updateprodMap.set(selectedProd, values);
+				// Append the new row to the product item table
+				var newRow = "<tr><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
+				$("#updateprodItemTbl tbody").append(newRow);
+				
+				//Save Product Item to DB
+				$.post( "data/proditem_add_data.php", { repackageprodID: $("#updateID").val(), singleprodID: selectedProd, prodGroup: updateGroup, prodQty: updateQty, runBal: runBalTotal }, function(result,status){
+					if (result == 'Success'){
+						// Load Product List Dropdown
+						reloadProdItemDD();
+						// Check balance Repackage
+						checkBalRepackage();
+						// Load Product List Table
+						reloadProdListTable($("#updateID").val());
+						successNotifNoload("Product Item successfully added!");
+					} 
+					else {
+						errorNotifNoload(result);
+					}
+				});
+				
+				$("#updateGroup").val('');
+				let mapSize = updateprodMap.size;
+				if (mapSize > 0) {
+					$("#updateQty").prop("readonly", true);
+				} else {
+					$("#updateQty").val('');
+					$("#updateQty").prop("readonly", false);
+				}
+				
+				successNotifNoload("Product Item successfully added!");
+			}
+		}
+		
+		//console.log([...updateprodMap.entries()]);
+		
+	});
+	
+
+	//--- Remove Product Item on the table (Add) ---//	
+	$(document).delegate(".removeprodItem", "click", function() {
+		
+		if (confirm("Are you sure you want to delete this product item?")) {
+			addprodMap.delete($(this).attr('id'));
+			$(this).parent().parent().remove();
+			successNotifNoload("Product Item successfully deleted!");
+			//console.log([...addprodMap.entries()]);
+			
+			let mapSize = addprodMap.size;
+			if (mapSize > 0) {
+				$("#addQty").prop("readonly", true);
+			} else {
+				$("#addQty").val('');
+				$("#addQty").prop("readonly", false);
+			}
+		}
+			
+	});
+	
+	//--- Remove Product Item on the table (Update) ---//	
+	$(document).delegate(".removeprodItemUpdate", "click", function() {
+		
+		if (confirm("Are you sure you want to delete this product item?")) {
+			updateprodMap.delete($(this).attr('id'));
+			$(this).parent().parent().remove();
+			
+			//Delete Product Item to DB
+			$.post( "data/proditem_delete_data.php", { rpID: $(this).attr('data-id'), prodID: $(this).attr('id'), qty: $("#updateQty").val(), rpProdID: $("#updateID").val() }, function(result,status){
+				if (result == 'Success'){
+					// Load Product List Dropdown
+					reloadProdItemDD();
+					// Check balance Repackage
+					checkBalRepackage();
+					// Load Product List Table
+					reloadProdListTable($("#updateID").val());
+					successNotifNoload("Product Item successfully deleted!");
+				} 
+				else {
+					errorNotifNoload(result);
+				}
+			});
+			
+			//console.log([...addprodMap.entries()]);
+			
+			let mapSize = updateprodMap.size;
+			if (mapSize > 0) {
+				$("#updateQty").prop("readonly", true);
+			} else {
+				$("#updateQty").val('');
+				$("#updateQty").prop("readonly", false);
+			}
+		}
+			
+	});
+
 	
 });
 </script>

@@ -22,6 +22,10 @@
 	$addsalePrice = $_POST['addsalePrice'];
 	$adddiscountedPrice = $_POST['adddiscountedPrice'];
 	
+	$addprodList = $_POST['addprodList'];
+	$insertedID = '';
+	$prodListDecoded = json_decode($addprodList, true);
+	
 	$sql = "SELECT count(prodID) as c FROM tbl_product WHERE LOWER(prodCode)=LOWER('{$addprodCode}')";
 	$result = mysqli_query($connection, $sql) ;
 	$data=mysqli_fetch_assoc($result);
@@ -32,6 +36,7 @@
 	   echo "Unable to add! Product Code already existing.";
 	   
 	} else {
+			// Insert Product
 			$sql = "INSERT INTO tbl_product (categoryID,
 			subCategoryID,
 			prodCode,
@@ -48,7 +53,8 @@
 			salePrice,
 			discountedPrice,
 			lowQty,
-			highQty) VALUES ('{$addCategory}',
+			highQty,
+			isRepackage) VALUES ('{$addCategory}',
 			'{$addsubCategory}',
 			'{$addprodCode}',
 			'{$addprodName}',
@@ -64,9 +70,42 @@
 			'{$addsalePrice}',
 			'{$adddiscountedPrice}',
 			'{$addlowQty}',
-			'{$addhighQty}')";
-		}
+			'{$addhighQty}',1)";
 		if(mysqli_query($connection, $sql)){
+			
+			// Get ID of newly inserted Product
+			if($insertedID == '') {
+				$insertedID = mysqli_insert_id($connection);
+			}
+			
+			// Save Repackage items 
+			$prodListMap = array();
+			$ctr = 1;
+			foreach ($prodListDecoded as $item) {
+				
+				$prodListMap[$item[0]] = $item[1];
+				$prodID = $item[0];
+				$prodGroup = explode("|", $item[1])[0];
+				$prodQty = explode("|", $item[1])[1];
+				$runBal = explode("|", $item[1])[2];
+				$single_prod = explode("|", $item[1])[3];
+				
+				// Update Running balance of the Repackage Product
+				if($ctr == 1) {
+					$sql = "UPDATE tbl_product SET runningBal = runningBal + {$prodQty} WHERE prodID={$insertedID}";
+					$result = mysqli_query($connection, $sql);
+				}
+				$ctr++;
+				
+				$sql = "INSERT INTO tbl_repackageitem (repackage_prodID, single_prodID, prodGroup, prodQty) VALUES ('$insertedID', '$single_prod', '$prodGroup', '$prodQty')";
+				$result = mysqli_query($connection, $sql);
+				
+				// Update Running balance of the Single Product
+				$sql = "UPDATE tbl_product SET runningBal={$runBal} WHERE prodID={$prodID}";
+				$result = mysqli_query($connection, $sql);
+				
+			}
+			
 			echo "Success";
 		}
 		else {

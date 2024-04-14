@@ -4,16 +4,18 @@
 	require_once('../includes/connection.php');
 	require_once('../includes/functions.php');
 
-	$tblName = $_POST['tblName'];
-	$sortName = $_POST['sortName'];
+    $itemID = $_POST['itemID'];
 	
-	$sql = "";
+	$sql="SELECT prod.prodID,
+				prod.prodCode,
+				prod.prodName, 
+				prod.runningBal,
+				rp.*
+				FROM tbl_product prod 
+				INNER JOIN tbl_repackageitem rp ON prod.prodID=rp.single_prodID
+				WHERE rp.repackage_prodID='{$itemID}'
+				ORDER BY prod.prodName ASC";
 	
-	if(isset($_POST["isRepackage"]) == 1) {
-		$sql="SELECT * FROM {$tblName} WHERE runningBal <> 0 AND isRepackage = 0 ORDER BY {$sortName} ASC";
-	} else {
-		$sql="SELECT * FROM {$tblName} ORDER BY {$sortName} ASC";
-	}
 	$result = mysqli_query($connection, $sql);
 	confirm_query($result);
 	$table = array();
