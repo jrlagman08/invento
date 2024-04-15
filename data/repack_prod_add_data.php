@@ -79,11 +79,9 @@
 			}
 			
 			// Save Repackage items 
-			$prodListMap = array();
 			$ctr = 1;
 			foreach ($prodListDecoded as $item) {
 				
-				$prodListMap[$item[0]] = $item[1];
 				$prodID = $item[0];
 				$prodGroup = explode("|", $item[1])[0];
 				$prodQty = explode("|", $item[1])[1];

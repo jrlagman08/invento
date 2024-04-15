@@ -56,7 +56,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="dataTableRec" class="table table-bordered table-striped">
+                 <table id="loadDataTable" class="table table-bordered table-striped">
                     <!-- Query data will be listed here - realtime update -->
                     <thead>
                         <tr>
@@ -110,6 +110,129 @@
 <!-- Custom script -->
 <script>
 $(document).ready(function() {
+	
+	$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodName", availBal: 1 }, function(result,status){
+		var obj = JSON.parse(result);
+		$("#ProdItem").empty();
+		obj.forEach(function(item) {
+			//data-id for prodCode
+			 $("#ProdItem").append("<option value='" + item.prodID + "' data-id='" + item.prodCode + "'>" + item.prodName + "</option>");
+		});
+	});
+	
+	//--- Datatable settings ---//
+	table = $("#loadDataTable").DataTable({
+	  "iDisplayLength": 25,
+	  "responsive": true, 
+	  "autoWidth": false,
+	  columnDefs: [{
+		  orderable: false,
+		  targets: "no-sort"
+	  }],
+	  "dom": 
+			"<'row px-3 pt-3'<'col-sm-6'l><'col-sm-6'f>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row px-3 pb-3'<'col-sm-5'i><'col-sm-7'p>>"
+	  /*,
+	  "footerCallback": function ( row, data, start, end, display ) {
+			var api = this.api(), data;
+ 
+			// Remove the formatting to get integer data for summation
+			var intVal = function ( i ) {
+				return typeof i === 'string' ?
+					i.replace(/[\$,]/g, '')*1 :
+					typeof i === 'number' ?
+						i : 0;
+			};
+ 
+			// Total over all pages (Grand Total)
+			var Gtotal = api
+				.column( 3 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Grand Total)
+			var pageGTotal = api
+				.column( 3, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+			  
+			// Total over all pages (Total Profit)
+			var totalP = api
+				.column( 4 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Total Profit)
+			var pageTotalP = api
+				.column( 4, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
 
+			// Total filtered rows on the selected column (code part added)
+			var sumCol4Filtered = display.map(el => data[el][3]).reduce((a, b) => intVal(a) + intVal(b), 0 );
+		  
+			// Update footer
+			$( api.column( 3 ).footer() ).html(Gtotal); //Grand Total
+			$( api.column( 4 ).footer() ).html(totalP); //Total Profit
+		} */
+	});
+	
+	//--- Generate Report ---//	
+	$(document).delegate("#btnGenReport", "click", function() {
+		$("body").css("cursor", "progress");
+
+		// get date range value
+		var startDate =  $("#dtRange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+		var endDate =  $("#dtRange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+		startDate = new Date(startDate).toISOString().slice(0, 10);
+		endDate = new Date(endDate).toISOString().slice(0, 10);
+		var dataSet = [];
+		var ctr = 0;
+	
+		table.clear();
+		$.post( "data/inventory_load_data.php", { prodItem: $("#ProdItem").val(), startDate: startDate, endDate: endDate }, function(result,status){
+			 var obj = JSON.parse(result);
+			 if (Object.keys(obj).length != 0){ 
+				ctr = 1;
+             }
+			 obj.forEach(function(item) {
+				 table.row.add([
+					new Date(item.orderDate).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""),
+					item.prodName,
+					item.paymentref,
+					"",
+					item.qty,
+					""
+				 ]);
+			});
+
+			table.draw(false);
+			
+			if (ctr == 0){
+				errorNotifNoload("No result for Generated Report!");
+			} else {
+				successNotifNoload("Generated Report successfully!");
+			}
+		});
+
+		$("body").css("cursor", "default");
+	
+		return false;
+	});
+
+	//Date range picker
+	$('#dtRange').daterangepicker();
+	
+	// Initialize Search Dropdown
+	$('.select2').select2();
 });
 </script>

@@ -1,5 +1,5 @@
--Supplier > product item
--Order List > product item
+-Order List > update product item
+-Inventory
 
 -Report
 -scanner

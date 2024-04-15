@@ -210,7 +210,7 @@
                     <div class="form-group">
                       <label>Product Code <span class="req">*</span></label>
                       <div class="row">
-                        <div class="col-sm-10"><input type="text" id="addprodCode" name="addprodCode" class="form-control" placeholder="Enter product code" required></div>
+                        <div class="col-sm-10"><input type="text" id="addprodCode" name="addprodCode" class="form-control" placeholder="Enter product code" maxlength="10" required></div>
                         <div class="col-sm-2"><button type="button" id="addgenQRCode" name="addgenQRCode" class="btn btn-default" data-toggle="modal" data-target="#modal-default-qrcode">QRCode</button></div>
                       </div>
                     </div>
@@ -353,7 +353,7 @@
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group">
-										<select id="addProdItemName" class="form-control"></select>
+										<select id="addProdItemName" class="form-control select2" style="width: 100%;"></select>
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -368,7 +368,7 @@
 								</div>
 								<div class="col-sm-2">
 									<div class="form-group">
-										<button type="button" class="btn btn-block btn-success" id="addprodItemBtn" id="addprodItemBtn">Add Product Item</button>
+										<button type="button" class="btn btn-block btn-success" id="addprodItemBtn" name="addprodItemBtn">Add Product Item</button>
 									</div>
 								</div>
 							</div>
@@ -425,7 +425,7 @@
                     <div class="form-group">
                       <label>Product Code <span class="req">*</span></label>
                       <div class="row">
-                        <div class="col-sm-10"><input type="text" id="updateprodCode" name="updateprodCode" class="form-control" placeholder="Update product code" required></div>
+                        <div class="col-sm-10"><input type="text" id="updateprodCode" name="updateprodCode" class="form-control" placeholder="Update product code" maxlength="10" required></div>
                         <div class="col-sm-2"><button type="button" id="updategenQRCode" name="updategenQRCode" class="btn btn-default" data-toggle="modal" data-target="#modal-default-qrcode">QRCode</button></div>
                       </div>
                     </div>
@@ -575,7 +575,7 @@
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group">
-										<select id="updateProdItemName" class="form-control"></select>
+										<select id="updateProdItemName" class="form-control select2" style="width: 100%;"></select>
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -782,11 +782,6 @@
 							  </tr>
 							  </thead>
 							  <tbody id="viewprodItemTblBody">
-								<tr>
-									<td>Anfanna Pantyhose</td>
-									<td>1</td>
-									<td>1</td>
-								</tr>
 							  </tbody>
 							</table>
 
@@ -1251,7 +1246,8 @@ $(document).ready(function() {
 			var obj = JSON.parse(result);
 			$("#updateProdItemName").empty();
 			obj.forEach(function(item) {
-				 $("#updateProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+				 //data-id for prodCode
+				 $("#updateProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
 			});
 		});
 	}
@@ -1287,7 +1283,7 @@ $(document).ready(function() {
 			}
 		});	
 		
-		console.log(updateprodMap.size);
+		//console.log(updateprodMap.size);
 	}
 	
 	//--- Get Item to Update ---//	
@@ -1476,7 +1472,8 @@ $(document).ready(function() {
 			var obj = JSON.parse(result);
 			$("#addProdItemName").empty();
 			obj.forEach(function(item) {
-				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+				//data-id for prodCode
+				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
 			});
 		});
 		
@@ -1498,10 +1495,10 @@ $(document).ready(function() {
 		} else {
 			if(addGroup == "" || addQty == "") {
 				errorNotifNoload("Please enter value on either group item and quantity fields!");
-			} else if (runbal < (addGroup*addQty)) {
+			} else if (parseInt(runbal) < (parseInt(addGroup)*parseInt(addQty))) {
 				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
 			} else {
-				var runBalTotal = runbal - (addGroup*addQty);
+				var runBalTotal = parseInt(runbal) - (parseInt(addGroup)*parseInt(addQty));
 				const values = addGroup +"|"+ addQty + "|" + runBalTotal +"|"+ selectedProd;
 				addprodMap.set(selectedProd, values);
 				// Append the new row to the product item table
@@ -1532,9 +1529,9 @@ $(document).ready(function() {
 		var prod = document.getElementById('updateProdItemName');
 		var selectedIndex = prod.selectedIndex;
 		var selectedProd = prod.options[selectedIndex].value;
-		var runbal = prod.options[selectedIndex].title;
-		var updateGroup = document.getElementById('updateGroup').value;
-		var updateQty = document.getElementById('updateQty').value;
+		var runbal = parseInt(prod.options[selectedIndex].title);
+		var updateGroup = parseInt(document.getElementById('updateGroup').value);
+		var updateQty = parseInt(document.getElementById('updateQty').value);
 		var selprodname = prod.options[selectedIndex].getAttribute("data-name");
             
 		if (updateprodMap.has(selectedProd)) {
@@ -1542,10 +1539,10 @@ $(document).ready(function() {
 		} else {
 			if(updateGroup == "" || updateQty == "") {
 				errorNotifNoload("Please enter value on either group item and quantity fields!");
-			} else if (runbal < (updateGroup*updateQty)) {
+			} else if (parseInt(runbal) < (parseInt(updateGroup)*parseInt(updateQty))) {
 				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
 			} else {
-				var runBalTotal = runbal - (updateGroup*updateQty);
+				var runBalTotal = parseInt(runbal) - (parseInt(updateGroup)*parseInt(updateQty));
 				const values = updateGroup +"|"+ updateQty + "|" + runBalTotal +"|"+ selectedProd;
 				updateprodMap.set(selectedProd, values);
 				// Append the new row to the product item table
@@ -1642,6 +1639,8 @@ $(document).ready(function() {
 			
 	});
 
+	// Initialize Search Dropdown
+	$('.select2').select2();
 	
 });
 </script>

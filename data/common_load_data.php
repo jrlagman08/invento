@@ -11,9 +11,12 @@
 	
 	if(isset($_POST["isRepackage"]) == 1) {
 		$sql="SELECT * FROM {$tblName} WHERE runningBal <> 0 AND isRepackage = 0 ORDER BY {$sortName} ASC";
+	} elseif(isset($_POST["availBal"]) == 1) {
+		$sql="SELECT * FROM {$tblName} WHERE runningBal <> 0 ORDER BY {$sortName} ASC";
 	} else {
 		$sql="SELECT * FROM {$tblName} ORDER BY {$sortName} ASC";
 	}
+	
 	$result = mysqli_query($connection, $sql);
 	confirm_query($result);
 	$table = array();

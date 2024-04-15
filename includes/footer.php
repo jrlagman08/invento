@@ -57,6 +57,8 @@
   <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
   <!-- Toastr -->
   <script src="plugins/toastr/toastr.min.js"></script>
+  <!-- Select2 -->
+  <script src="plugins/select2/js/select2.full.min.js"></script>
   <!-- AdminLTE App -->
   <script src="js/adminlte.js"></script>
 

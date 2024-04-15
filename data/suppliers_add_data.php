@@ -18,6 +18,10 @@
 	$addContactEmailAddress = $_POST['addContactEmailAddress'];
 	$addContactMobileNumber = $_POST['addContactMobileNumber'];
 	
+	$addprodList = $_POST['addprodList'];
+	$insertedID = '';
+	$prodListDecoded = json_decode($addprodList, true);
+	
 	$sql = "SELECT count(name) as c FROM tbl_supplier WHERE LOWER(name)=LOWER('{$addsupplierName}')";
 	$result = mysqli_query($connection, $sql) ;
 	$data=mysqli_fetch_assoc($result);
@@ -29,8 +33,28 @@
 	   
 	} else {
 		
+		// Insert Supplier
 		$sql = "INSERT INTO tbl_supplier (name,address,address2,city,province,country,zipcode,email,phone,mobile,econtactPerson,econtactEmail,econtactMobile) VALUES ('{$addsupplierName}','{$addAddress1}','{$addAddress2}','{$addCity}','{$addProvince}','{$addCountry}','{$addZip}','{$addEmailAddress}','{$addPhoneNumber}','{$addMobileNumber}','{$addContactPerson}','{$addContactEmailAddress}','{$addContactMobileNumber}')";
 		if(mysqli_query($connection, $sql)){
+			
+			// Get ID of newly inserted Product
+			if($insertedID == '') {
+				$insertedID = mysqli_insert_id($connection);
+			}
+			
+			// Save Supplier Product Items 
+			foreach ($prodListDecoded as $item) {
+				
+				$prodcode = $item[0];
+				$prodname = explode("|", $item[1])[0];
+				$proddetails = explode("|", $item[1])[1];
+				$prodorigprice = explode("|", $item[1])[2];
+				
+				$sql = "INSERT INTO tbl_supplieritem (supplierID, prodCode, prodName, prodDetails, origPrice) VALUES ('$insertedID', '$prodcode', '$prodname', '$proddetails', '$prodorigprice')";
+				$result = mysqli_query($connection, $sql);
+				
+			}
+			
 			echo "Success";
 		}
 		else {

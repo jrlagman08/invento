@@ -210,7 +210,7 @@
                     <div class="form-group">
                       <label>Product Code <span class="req">*</span></label>
                       <div class="row">
-                        <div class="col-sm-10"><input type="text" id="addprodCode" name="addprodCode" class="form-control" placeholder="Enter product code" required></div>
+                        <div class="col-sm-10"><input type="text" id="addprodCode" name="addprodCode" class="form-control" placeholder="Enter product code" maxlength="10" required></div>
                         <div class="col-sm-2"><button type="button" id="addgenQRCode" name="addgenQRCode" class="btn btn-default" data-toggle="modal" data-target="#modal-default-qrcode">QRCode</button></div>
                       </div>
                     </div>
@@ -375,7 +375,7 @@
                     <div class="form-group">
                       <label>Product Code <span class="req">*</span></label>
                       <div class="row">
-                        <div class="col-sm-10"><input type="text" id="updateprodCode" name="updateprodCode" class="form-control" placeholder="Update product code" required></div>
+                        <div class="col-sm-10"><input type="text" id="updateprodCode" name="updateprodCode" class="form-control" placeholder="Update product code" maxlength="10" required></div>
                         <div class="col-sm-2"><button type="button" id="updategenQRCode" name="updategenQRCode" class="btn btn-default" data-toggle="modal" data-target="#modal-default-qrcode">QRCode</button></div>
                       </div>
                     </div>

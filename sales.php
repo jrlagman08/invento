@@ -110,7 +110,7 @@
 $(document).ready(function() {
 	
 	//--- Datatable settings ---//
-	$("#loadDataTable").DataTable({
+	table = $("#loadDataTable").DataTable({
 	  "iDisplayLength": 25,
 	  "responsive": true, 
 	  "autoWidth": false,
@@ -122,6 +122,56 @@ $(document).ready(function() {
 			"<'row px-3 pt-3'<'col-sm-6'l><'col-sm-6'f>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row px-3 pb-3'<'col-sm-5'i><'col-sm-7'p>>",
+	  "footerCallback": function ( row, data, start, end, display ) {
+			var api = this.api(), data;
+ 
+			// Remove the formatting to get integer data for summation
+			var intVal = function ( i ) {
+				return typeof i === 'string' ?
+					i.replace(/[\$,]/g, '')*1 :
+					typeof i === 'number' ?
+						i : 0;
+			};
+ 
+			// Total over all pages (Grand Total)
+			var Gtotal = api
+				.column( 3 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Grand Total)
+			var pageGTotal = api
+				.column( 3, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+			  
+			// Total over all pages (Total Profit)
+			var totalP = api
+				.column( 4 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Total Profit)
+			var pageTotalP = api
+				.column( 4, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+
+			// Total filtered rows on the selected column (code part added)
+			var sumCol4Filtered = display.map(el => data[el][3]).reduce((a, b) => intVal(a) + intVal(b), 0 );
+		  
+			// Update footer
+			$( api.column( 3 ).footer() ).html(Gtotal); //Grand Total
+			$( api.column( 4 ).footer() ).html(totalP); //Total Profit
+		}
 	});
 	
 	//--- Generate Report ---//	
@@ -129,97 +179,39 @@ $(document).ready(function() {
 		$("body").css("cursor", "progress");
 
 		// get date range value
-		var startDate =  $("#dtRange").data('daterangepicker').startDate.format('MM/DD/YYYY');
-		var endDate =  $("#dtRange").data('daterangepicker').endDate.format('MM/DD/YYYY');
-		startDate = new Date(startDate);
-		endDate = new Date(endDate);
-		//console.log(startDate + " to " + endDate);
+		var startDate =  $("#dtRange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+		var endDate =  $("#dtRange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+		startDate = new Date(startDate).toISOString().slice(0, 10);
+		endDate = new Date(endDate).toISOString().slice(0, 10);
 		var dataSet = [];
+		var ctr = 0;
+	
+		table.clear();
+		$.post( "data/sales_load_data.php", { startDate: startDate, endDate: endDate }, function(result,status){
+			 var obj = JSON.parse(result);
+			 if (Object.keys(obj).length != 0){ 
+				ctr = 1;
+             }
+			 obj.forEach(function(item) {
+				 table.row.add([
+					new Date(item.orderDate).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""),
+					item.orderNum,
+					item.name,
+					item.grandTotal,
+					item.profit
+				 ]);
+			});
 
-		/*dataSet.push([doc.data().orderDate.toDate().toLocaleString("en-US", {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""), 
-		doc.data().orderNum, 
-		doc.data().cName,
-		doc.data().grandTotal,
-		"1" //profit here*/
-
-			//--- Datatable Settings ---//
-			$("#dataTableRec").DataTable({
-			"responsive": true, "lengthChange": false, "autoWidth": false,
-			"buttons": [
-						{ extend: "copy", footer: true, message: "Date Range Selected: " + startDate + " to " + endDate }, 
-						{ extend: "csv", footer: true, message: "Date Range Selected: " + startDate + " to " + endDate }, 
-						{ extend: "excel", footer: true, message: "Date Range Selected: " + startDate + " to " + endDate }, 
-						{ extend: "pdf", footer: true, message: "Date Range Selected: " + startDate + " to " + endDate }, 
-						{ extend: "print", footer: true, message: "Date Range Selected: " + startDate + " to " + endDate }, 
-						{ extend: "colvis", footer: true, message: "Date Range Selected: " + startDate + " to " + endDate }
-					],
-			"data": dataSet,
-			"columns": [
-						{ title: "Order Date" },
-						{ title: "Order No." },
-						{ title: "Customer" },
-						{ title: "Grand Total" },
-						{ title: "Total Profit" }
-					],
-			"destroy": true,
-			order: [[0, 'desc']],
-			"footerCallback": function ( row, data, start, end, display ) {
-				var api = this.api(), data;
-	 
-				// Remove the formatting to get integer data for summation
-				var intVal = function ( i ) {
-					return typeof i === 'string' ?
-						i.replace(/[\$,]/g, '')*1 :
-						typeof i === 'number' ?
-							i : 0;
-				};
-	 
-				// Total over all pages (Grand Total)
-				var Gtotal = api
-					.column( 3 )
-					.data()
-					.reduce( function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0 );
-	 
-				// Total over this page (Grand Total)
-				var pageGTotal = api
-					.column( 3, { page: 'current'} )
-					.data()
-					.reduce( function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0 );
-				  
-				// Total over all pages (Total Profit)
-				var totalP = api
-					.column( 4 )
-					.data()
-					.reduce( function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0 );
-	 
-				// Total over this page (Total Profit)
-				var pageTotalP = api
-					.column( 4, { page: 'current'} )
-					.data()
-					.reduce( function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0 );
-
-				// Total filtered rows on the selected column (code part added)
-				var sumCol4Filtered = display.map(el => data[el][3]).reduce((a, b) => intVal(a) + intVal(b), 0 );
-			  
-				// Update footer
-				$( api.column( 3 ).footer() ).html(Gtotal); //Grand Total
-				$( api.column( 4 ).footer() ).html(totalP); //Total Profit
-			}
-			}).buttons().container().appendTo('#dataTableRec_wrapper .col-md-6:eq(0)');
-			if (counter == 0){
+			table.draw(false);
+			
+			if (ctr == 0){
 				errorNotifNoload("No result for Generated Report!");
 			} else {
 				successNotifNoload("Generated Report successfully!");
 			}
-			$("body").css("cursor", "default");
+		});
+
+		$("body").css("cursor", "default");
 	
 		return false;
 	});
