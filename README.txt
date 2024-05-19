@@ -1,7 +1,15 @@
--Order List > update product item
--Inventory
+*Order List
+	-update product item
+*Report
+	-Sales (for polishing)
+	-Inventory
+*Inventory
+	-Inventory Counts
+	-Item Received
 
--Report
+
+
+-number only + period
 -scanner
 
 -Register

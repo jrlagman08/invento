@@ -222,7 +222,7 @@ $(document).ready(function() {
 
 		if (confirm("Are you sure you want to delete this record?")) {
 		    var dataID = $(this).attr('data-id'); //get the item ID
-			$.post( "data/common_delete_data.php", { tblName: "tbl_category", fieldName: "categoryID", notifName: "Category", itemID: dataID }, function(result,status){
+			$.post( "data/common_delete_data.php", { tblName: "tbl_category", fieldName: "categoryID", notifName: "Category", itemID: dataID, curMod: "category" }, function(result,status){
 				if (result == 'Success'){
 					loadData();
 					successNotifNoload("Category successfully deleted!");

@@ -61,8 +61,8 @@
                 </div>
               </div>
               <!-- /.card-header -->
-			  <div class="card-body">
-                <table id="loadDataTable" class="table table-bordered table-striped">
+			  <div class="card-body p-0">
+                <table id="loadDataTable" class="table table-striped">
                <!--<div class="card-body p-0">
                 <table id="loadDataTable" class="table table-striped">-->
                   <thead>
@@ -142,7 +142,7 @@
                           <div class="card-header">
                             <h4 class="card-title">Image Gallery</h4>
                           </div>
-                          <div class="card-body">
+                          <div class="card-body scrollable-wrapper-gallery">
                             <div class="row" id="imgGallery">
                               <!---- insert image gallery ---->
                             </div>
@@ -313,7 +313,7 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Original Price <span class="req">*</span></label>
+                    <label>Cost / Original Price <span class="req">*</span></label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -322,16 +322,16 @@
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Sale Price</label>
+                    <label>Retail / Selling Price <span class="req">*</span></label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="addsalePrice" name="addsalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" value="0">
+                      <input type="text" id="addsalePrice" name="addsalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" value="0" required>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Discounted Price</label>
+                    <label>Customer Discounted Price</label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -358,7 +358,7 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
-										<input type="number" id="addGroup" name="addGroup" minlength="1" maxlength="5" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter group item by" min="0" max="90000" step="1">
+										<input type="number" id="addGroup" name="addGroup" minlength="1" maxlength="5" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter group by: Ex. 2, 4, 6, 12..." min="0" max="90000" step="1">
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -372,18 +372,22 @@
 									</div>
 								</div>
 							</div>
-							<table class="table" id="addprodItemTbl">
-							  <thead>
-							  <tr>
-								<th>Product Name</th>
-								<th>Repack Group</th>
-								<th>Quantity</th>
-								<th style="width: 40px">Action</th>
-							  </tr>
-							  </thead>
-							  <tbody>
-							  </tbody>
-							</table>
+							
+							<div class="scrollable-wrapper">
+								<table class="table" id="addprodItemTbl">
+								  <thead>
+								  <tr>
+									<th>Product Code</th>
+									<th>Product Name</th>
+									<th>Repack Group</th>
+									<th>Quantity</th>
+									<th style="width: 40px">Action</th>
+								  </tr>
+								  </thead>
+								  <tbody id="addprodItemTblBody">
+								  </tbody>
+								</table>
+							</div>
 
                       </div>
                     </div>
@@ -534,7 +538,8 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Original Price <span class="req">*</span></label>
+                    <label>Cost / Original Price <span class="req">*</span></label>
+					<br/><sup id="updateLastUpdateOrig" style="color:red;"></sup>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -543,16 +548,18 @@
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Sale Price</label>
+                    <label>Retail / Selling Price <span class="req">*</span></label>
+					<br/><sup id="updateLastUpdateSale" style="color:red;"></sup>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="updatesalePrice" name="updatesalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)">
+                      <input type="text" id="updatesalePrice" name="updatesalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" required>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Discounted Price</label>
+                    <label>Customer Discounted Price</label>
+					<br/><sup id="updateLastUpdateDiscount" style="color:red;"></sup>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -580,7 +587,7 @@
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
-										<input type="number" id="updateGroup" name="updateGroup" minlength="1" maxlength="5" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter group item by" min="0" max="90000" step="1">
+										<input type="number" id="updateGroup" name="updateGroup" minlength="1" maxlength="5" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter group by: Ex. 2, 4, 6, 12..." min="0" max="90000" step="1">
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -594,18 +601,22 @@
 									</div>
 								</div>
 							</div>
-							<table class="table" id="updateprodItemTbl">
-							  <thead>
-							  <tr>
-								<th>Product Name</th>
-								<th>Repack Group</th>
-								<th>Quantity</th>
-								<th style="width: 40px">Action</th>
-							  </tr>
-							  </thead>
-							  <tbody id="updateprodItemTblBody">
-							  </tbody>
-							</table>
+							
+							<div class="scrollable-wrapper">
+								<table class="table" id="updateprodItemTbl">
+								  <thead>
+								  <tr>
+									<th>Product Code</th>
+									<th>Product Name</th>
+									<th>Repack Group</th>
+									<th>Quantity</th>
+									<th style="width: 40px">Action</th>
+								  </tr>
+								  </thead>
+								  <tbody id="updateprodItemTblBody">
+								  </tbody>
+								</table>
+							</div>
 
                       </div>
                     </div>
@@ -616,6 +627,9 @@
               </div>
               <div class="modal-footer justify-content-between">
 				<input id="updateID" name="updateID" class="form-control" type="hidden">
+				<input id="updateOrigP" name="updateOrigP" class="form-control" type="hidden">
+				<input id="updateSaleP" name="updateSaleP" class="form-control" type="hidden">
+				<input id="updateDiscountP" name="updateDiscountP" class="form-control" type="hidden">
                 <button type="button" id="closeUpdateForm" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
               </div>
@@ -737,13 +751,13 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Original Price</label>: ₱<span id="origPrice"></span>
+                    <label>Cost / Original Price</label>: ₱<span id="origPrice"></span><br/><sup id="viewLastUpdateOrig" style="color:red;"></sup>
                   </div>
                   <div class="col-sm-4">
-                    <label>Sale Price</label>: ₱<span id="salePrice"></span>
+                    <label>Retail / Selling Price</label>: ₱<span id="salePrice"></span><br/><sup id="viewLastUpdateSale" style="color:red;"></sup>
                   </div>
                   <div class="col-sm-4">
-                    <label>Discounted Price</label>: ₱<span id="discountedPrice"></span>
+                    <label>Customer Discounted Price</label>: ₱<span id="discountedPrice"></span><br/><sup id="viewLastUpdateDiscount" style="color:red;"></sup>
                   </div>
                 </div>
 				<br/>
@@ -753,7 +767,7 @@
                       <div class="card-header">
                         <h4 class="card-title">Image Gallery</h4>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body scrollable-wrapper-gallery">
                         <div class="row" id="imgGalleryView">
                           <!---- insert image gallery ---->
                         </div>
@@ -770,7 +784,7 @@
                       <div class="card-header">
                         <h4 class="card-title">Product Item(s)</h4>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body scrollable-wrapper">
 					  
 							<table class="table">
 							  <thead>
@@ -1223,6 +1237,13 @@ $(document).ready(function() {
 				$("#origPrice").text(obj[0].origPrice);
 				$("#salePrice").text(obj[0].salePrice);
 				$("#discountedPrice").text(obj[0].discountedPrice);
+				
+				$("#viewLastUpdateOrig").text("Last Update: " + new Date(obj[0].lastUpdateOrigPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
+				$("#viewLastUpdateSale").text("Last Update: " + new Date(obj[0].lastUpdateSalePrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+
+				$("#viewLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
 				$("#viewID").attr('data-id',dataID);
 				makeQrCodeView(obj[0].prodCode);
 				loadImgData(dataID,"imgGalleryView");
@@ -1247,7 +1268,7 @@ $(document).ready(function() {
 			$("#updateProdItemName").empty();
 			obj.forEach(function(item) {
 				 //data-id for prodCode
-				 $("#updateProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+				 $("#updateProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodCode + "</option>");
 			});
 		});
 	}
@@ -1270,7 +1291,7 @@ $(document).ready(function() {
 				qtyTemp = item.prodQty;
 				const values = item.prodGroup +"|"+ item.prodQty + "|" + item.runningBal +"|"+ item.single_prodID;
 				updateprodMap.set(item.single_prodID, values);
-				$("#updateprodItemTblBody").append("<tr><td>" + item.prodName + "</td><td>" + item.prodGroup + "</td><td>" + item.prodQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.single_prodID + " data-id=" + item.repackageitemID + "><i class='fas fa-trash'></i></a></td></tr>");
+				$("#updateprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.prodGroup + "</td><td>" + item.prodQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.single_prodID + " data-id=" + item.repackageitemID + "><i class='fas fa-trash'></i></a></td></tr>");
 			});
 			
 			let mapSize = updateprodMap.size;
@@ -1318,6 +1339,17 @@ $(document).ready(function() {
 				$("#updateorigPrice").val(obj[0].origPrice);
 				$("#updatesalePrice").val(obj[0].salePrice);
 				$("#updatediscountedPrice").val(obj[0].discountedPrice);
+				
+				$("#updateLastUpdateOrig").text("Last Update: " + new Date(obj[0].lastUpdateOrigPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
+				$("#updateLastUpdateSale").text("Last Update: " + new Date(obj[0].lastUpdateSalePrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+
+				$("#updateLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
+				$("#updateOrigP").val(obj[0].origPrice);
+				$("#updateSaleP").val(obj[0].salePrice);
+				$("#updateDiscountP").val(obj[0].discountedPrice);
+				
 				$("#updateID").val(dataID);
 				setSubCat(obj[0].categoryID,obj[0].subCategoryID);
 				makeQrCode("updateprodCode","updategenQRCode");
@@ -1358,7 +1390,7 @@ $(document).ready(function() {
 
 		if (confirm("Are you sure you want to delete this record?")) {
 		    var dataID = $(this).attr('data-id'); //get the item ID
-			$.post( "data/common_delete_data.php", { tblName: "tbl_product", fieldName: "prodID", notifName: "Product", itemID: dataID }, function(result,status){
+			$.post( "data/common_delete_data.php", { tblName: "tbl_product", fieldName: "prodID", notifName: "Product", itemID: dataID, curMod: "repackage" }, function(result,status){
 				if (result == 'Success'){
 					loadData();
 					successNotifNoload("Repackage Product successfully deleted!");
@@ -1467,13 +1499,15 @@ $(document).ready(function() {
 	$("#addRepackageBtn").click(function(){
 		// Clear Maps
 		addprodMap.clear();
+		// Clear Product Item List
+		$("#addprodItemTblBody").empty();
 		
 		$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodName", isRepackage: 1 }, function(result,status){
 			var obj = JSON.parse(result);
 			$("#addProdItemName").empty();
 			obj.forEach(function(item) {
 				//data-id for prodCode
-				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodCode + "</option>");
 			});
 		});
 		
@@ -1485,6 +1519,7 @@ $(document).ready(function() {
 		var prod = document.getElementById('addProdItemName');
 		var selectedIndex = prod.selectedIndex;
 		var selectedProd = prod.options[selectedIndex].value;
+		var selectedProdText = prod.options[selectedIndex].text;
 		var runbal = prod.options[selectedIndex].title;
 		var addGroup = document.getElementById('addGroup').value;
 		var addQty = document.getElementById('addQty').value;
@@ -1502,7 +1537,7 @@ $(document).ready(function() {
 				const values = addGroup +"|"+ addQty + "|" + runBalTotal +"|"+ selectedProd;
 				addprodMap.set(selectedProd, values);
 				// Append the new row to the product item table
-				var newRow = "<tr><td>" + selprodname + "</td><td>" + addGroup + "</td><td>" + addQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
+				var newRow = "<tr><td>" + selectedProdText + "</td><td>" + selprodname + "</td><td>" + addGroup + "</td><td>" + addQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
 				$("#addprodItemTbl tbody").append(newRow);
 				
 				$("#addGroup").val('');
@@ -1529,6 +1564,7 @@ $(document).ready(function() {
 		var prod = document.getElementById('updateProdItemName');
 		var selectedIndex = prod.selectedIndex;
 		var selectedProd = prod.options[selectedIndex].value;
+		var selectedProdText = prod.options[selectedIndex].text;
 		var runbal = parseInt(prod.options[selectedIndex].title);
 		var updateGroup = parseInt(document.getElementById('updateGroup').value);
 		var updateQty = parseInt(document.getElementById('updateQty').value);
@@ -1546,7 +1582,7 @@ $(document).ready(function() {
 				const values = updateGroup +"|"+ updateQty + "|" + runBalTotal +"|"+ selectedProd;
 				updateprodMap.set(selectedProd, values);
 				// Append the new row to the product item table
-				var newRow = "<tr><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
+				var newRow = "<tr><td>" + selectedProdText + "</td><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
 				$("#updateprodItemTbl tbody").append(newRow);
 				
 				//Save Product Item to DB
@@ -1574,7 +1610,7 @@ $(document).ready(function() {
 					$("#updateQty").prop("readonly", false);
 				}
 				
-				successNotifNoload("Product Item successfully added!");
+				//successNotifNoload("Product Item successfully added!");
 			}
 		}
 		

@@ -6,7 +6,7 @@
 
     $itemID = $_POST['itemID'];
 	
-	$sql="SELECT prod.prodName,
+	$sql="SELECT prod.prodCode, prod.prodName,
 				ord.*
 				FROM tbl_product prod 
 				INNER JOIN tbl_orderitem ord ON prod.prodID=ord.prodID

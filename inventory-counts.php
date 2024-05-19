@@ -38,8 +38,8 @@
                 </h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <table id="dataTableRec" class="table table-bordered table-striped">
+              <div class="card-body p-0">
+                <table id="dataTableRec" class="table table-striped">
                     <!-- Query data will be listed here - realtime update -->
                 </table>
               </div>

@@ -46,6 +46,7 @@
                       <th>Order No.</th>
                       <th>Customer</th>
 					  <th>Payment Details</th>
+					  <th>Balance</th>
 					  <th>Grand Total</th>
 					  <th>Cashier</th>
                       <th style="width: 40px" class="no-sort">Action</th>
@@ -60,6 +61,7 @@
                       <th>Order No.</th>
                       <th>Customer</th>
 					  <th>Payment Details</th>
+					  <th>Balance</th>
 					  <th>Grand Total</th>
 					  <th>Cashier</th>
                       <th style="width: 40px" class="no-sort">Action</th>
@@ -177,21 +179,27 @@
 					  
 							<div class="row">
 							  <div class="col-sm-3">
+								<label>Select Product <span class="req">*</span></label>
 								<div class="form-group">
 								  <select id="addProdItemName" class="form-control select2" style="width: 100%;"></select>
 								</div>
 							  </div>
 							  <div class="col-sm-3">
+								<label>Cost / Original Price <span class="req">*</span></label>
 								<div class="form-group">
-								  <input type="number" id="addOrigPrice" name="addOrigPrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter original price">
+								  <input type="number" id="addOrigPrice" name="addOrigPrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter cost/original price">
+								  <span id="addLastUpdateOrig" style="color:red; font-size: 12px;"></span>
 								</div>
 							  </div>
 							  <div class="col-sm-3">
+								<label>Retail / Selling Price <span class="req">*</span></label>
 								<div class="form-group">
-								  <input type="number" id="addQty" name="addQty" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter quantity">
+								  <input type="number" id="addSalePrice" name="addSalePrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter retail/selling price">
+								  <span id="addLastUpdateSale" style="color:red; font-size: 12px;"></span>
 								</div>
 							  </div>
 							  <div class="col-sm-3">
+								<label>&nbsp;</label>
 								<div class="form-group">
 								  <button type="button" class="btn btn-block btn-success" id="addprodItemBtn" name="addprodItemBtn">Add Product Item</button>
 								</div>
@@ -199,37 +207,45 @@
 							</div>
 							<div class="row">
 							  <div class="col-sm-3">
-								<div class="form-group">
-								  <input type="number" id="addSalePrice" name="addSalePrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter sale price">
-								</div>
-							  </div>
-							  <div class="col-sm-3">
-								<div class="form-group">
-								  <input type="number" id="addDiscount" name="addDiscount" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter discount">
-								</div>
-							  </div>
-							  <div class="col-sm-3">
+								<label>Customer Discounted Price <span class="req">*</span></label>
 								<div class="form-group">
 								  <input type="number" id="addDiscountedPrice" name="addDiscountedPrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter discounted price">
+								  <span id="addLastUpdateDiscount" style="color:red; font-size: 12px;"></span>
+								</div>
+							  </div>
+							  <div class="col-sm-3">
+							    <label>Discount Amount to Apply</label>
+								<div class="form-group">
+								  <input type="number" id="addDiscount" name="addDiscount" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter discount amount">
+								</div>
+							  </div>
+							  <div class="col-sm-3">
+							    <label>Order Quantity <span class="req">*</span></label>
+								<div class="form-group">
+								  <input type="number" id="addQty" name="addQty" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter order quantity">
 								</div>
 							  </div>
 							</div>
-							<table class="table" id="addprodItemTbl">
-							  <thead>
-							  <tr>
-								 <th>Product Name</th>
-								 <th>Original Price</th>
-								 <th>Quantity</th>
-								 <th>Sale Price</th>
-								 <th>Discount</th>
-								 <th>Discounted Price</th>
-								 <th>Total Price</th>
-								 <th style="width: 40px">Action</th>
-							  </tr>
-							  </thead>
-							  <tbody>
-							  </tbody>
-							</table>
+							
+							<div class="scrollable-wrapper">
+								<table class="table" id="addprodItemTbl">
+								  <thead>
+								  <tr>
+									 <th>Product Code</th>
+									 <th>Product Name</th>
+									 <th>Cost/Original Price</th>
+									 <th>Retail/Selling Price</th>
+									 <th>Quantity</th>
+									 <th>Discount Applied</th>
+									 <th>Total Discount</th>
+									 <th>Total Price</th>
+									 <th style="width: 40px">Action</th>
+								  </tr>
+								  </thead>
+								  <tbody id="addprodItemTblBody">
+								  </tbody>
+								</table>
+							</div>
 
                       </div>
                     </div>
@@ -330,7 +346,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-					  <input type="number" id="updateBalance" name="updateBalance" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" required>
+					  <input type="number" id="updateBalance" name="updateBalance" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" readonly>
                     </div>
                   </div>
                   <div class="col-sm-4">
@@ -353,59 +369,74 @@
 					  
 							<div class="row">
 							  <div class="col-sm-3">
+								<label>Select Product <span class="req">*</span></label>
 								<div class="form-group">
 								  <select id="updateProdItemName" class="form-control select2" style="width: 100%;"></select>
 								</div>
 							  </div>
 							  <div class="col-sm-3">
+								<label>Cost / Original Price <span class="req">*</span></label>
 								<div class="form-group">
-								  <input type="number" id="updateOrigPrice" name="updateOrigPrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter original price">
+								  <input type="number" id="updateOrigPrice" name="updateOrigPrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter cost/original price">
+								  <span id="updateLastUpdateOrig" style="color:red; font-size: 12px;"></span>
 								</div>
 							  </div>
 							  <div class="col-sm-3">
+								<label>Retail / Selling Price <span class="req">*</span></label>
 								<div class="form-group">
-								  <input type="number" id="updateQty" name="updateQty" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter quantity">
+								  <input type="number" id="updateSalePrice" name="updateSalePrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter retail/selling price">
+								  <span id="updateLastUpdateSale" style="color:red; font-size: 12px;"></span>
 								</div>
 							  </div>
 							  <div class="col-sm-3">
+								<label>&nbsp;</label>
 								<div class="form-group">
 								  <button type="button" class="btn btn-block btn-success" id="updateprodItemBtn" name="updateprodItemBtn">Add Product Item</button>
 								</div>
 							  </div>
 							</div>
+							
 							<div class="row">
 							  <div class="col-sm-3">
-								<div class="form-group">
-								  <input type="number" id="updateSalePrice" name="updateSalePrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter sale price">
-								</div>
-							  </div>
-							  <div class="col-sm-3">
-								<div class="form-group">
-								  <input type="number" id="updateDiscount" name="updateDiscount" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter discount">
-								</div>
-							  </div>
-							  <div class="col-sm-3">
+								<label>Customer Discounted Price <span class="req">*</span></label>
 								<div class="form-group">
 								  <input type="number" id="updateDiscountedPrice" name="updateDiscountedPrice" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter discounted price">
+								  <span id="updateLastUpdateDiscount" style="color:red; font-size: 12px;"></span>
+								</div>
+							  </div>
+							  <div class="col-sm-3">
+								<label>Discount Amount to Apply</label>
+								<div class="form-group">
+								  <input type="number" id="updateDiscount" name="updateDiscount" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter discount amount">
+								</div>
+							  </div>
+							  <div class="col-sm-3">
+								<label>Order Quantity <span class="req">*</span></label>
+								<div class="form-group">
+								  <input type="number" id="updateQty" name="updateQty" minlength="1" maxlength="10" onkeypress="return onlyNumberKey(event)" class="form-control"  min="0" max="9000000000" step="1" placeholder="Enter order quantity">
 								</div>
 							  </div>
 							</div>
-							<table class="table" id="updateprodItemTbl">
-							  <thead>
-							  <tr>
-								 <th>Product Name</th>
-								 <th>Original Price</th>
-								 <th>Quantity</th>
-								 <th>Sale Price</th>
-								 <th>Discount</th>
-								 <th>Discounted Price</th>
-								 <th>Total Price</th>
-								 <th style="width: 40px">Action</th>
-							  </tr>
-							  </thead>
-							  <tbody id="updateprodItemTblBody">
-							  </tbody>
-							</table>
+							
+							<div class="scrollable-wrapper">
+								<table class="table" id="updateprodItemTbl">
+								  <thead>
+								  <tr>
+									 <th>Product Code</th>
+									 <th>Product Name</th>
+									 <th>Cost/Original Price</th>
+									 <th>Retail/Selling Price</th>
+									 <th>Quantity</th>
+									 <th>Discount Applied</th>
+									 <th>Total Discount</th>
+									 <th>Total Price</th>
+									 <th style="width: 40px">Action</th>
+								  </tr>
+								  </thead>
+								  <tbody id="updateprodItemTblBody">
+								  </tbody>
+								</table>
+							</div>
 
                       </div>
                     </div>
@@ -504,18 +535,19 @@
                       <div class="card-header">
                         <h4 class="card-title">Product Item(s)</h4>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body scrollable-wrapper">
 					  
 							<table class="table">
 							  <thead>
 							  <tr>
-								  <th>Product Name</th>
-								  <th>Original Price</th>
-								  <th>Quantity</th>
-								  <th>Sale Price</th>
-								  <th>Discount</th>
-								  <th>Discounted Price</th>
-								  <th>Total Price</th>
+									<th>Product Code</th>
+									 <th>Product Name</th>
+									 <th>Cost/Original Price</th>
+									 <th>Retail/Selling Price</th>
+									 <th>Quantity</th>
+									 <th>Discount Applied</th>
+									 <th>Total Discount</th>
+									 <th>Total Price</th>
 							  </tr>
 							  </thead>
 							  <tbody id="viewprodItemTblBody">
@@ -557,6 +589,10 @@ $(document).ready(function() {
 	
 	const addprodMap = new Map();
 	const updateprodMap = new Map();
+	
+	let Oprice = "";
+	let Sprice = "";
+	let Dprice = "";
 
 	//--- Datatable settings ---//
 	table = $("#loadDataTable").DataTable({
@@ -588,6 +624,7 @@ $(document).ready(function() {
 					item.orderNum, 
                     item.cname, 
 					item.pname, 
+					item.balance,
                     item.grandTotal,
 					item.cashier,
 					"<div class='btn-group btn-group-sm'><a href='#' class='btn btn-info viewItem' data-id="+item.orderID+" data-toggle='modal' data-target='#modal-default-view' title='View'><i class='fas fa-eye'></i></a><a href='#' class='btn btn-warning updateItem' data-id="+item.orderID+" data-toggle='modal' data-target='#modal-default-update' title='Update'><i class='fas fa-pen'></i></a><a href='#' class='btn btn-danger deleteItem' data-id="+item.orderID+" title='Delete'><i class='fas fa-trash'></i></a></div>"])
@@ -690,12 +727,19 @@ $(document).ready(function() {
 				$("#viewprodItemTblBody").empty();
 				obj.forEach(function(item) {
 						var price = 0;
+						var totalDiscount = 0;
 						if (item.salePrice != "" && item.salePrice != 0) {
 							price = parseInt(item.salePrice) * parseInt(item.qty);
 						} else {
-							price = parseInt(item.origPrice) * parseInt(item.qty);
+							errorNotifNoload("Please specify the retail/selling price!");
 						}
-					 $("#viewprodItemTblBody").append("<tr><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.qty + "</td><td>" + item.salePrice + "</td><td>" + item.discountAmount + "</td><td>" + item.discountedPrice + "</td><td>" + price + "</td></tr>");
+						
+						if (item.discountAmount != "" && item.discountAmount != 0) {
+							totalDiscount = parseInt(item.discountAmount) * parseInt(item.qty);
+							price = parseInt(price) - parseInt(totalDiscount);
+						}
+				
+					 $("#viewprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.salePrice + "</td><td>" + item.qty + "</td><td>" + item.discountAmount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td></tr>");
 				});
 			});
 			
@@ -705,6 +749,22 @@ $(document).ready(function() {
 	$(document).delegate(".updateItem", "click", function() {
 
 		    var dataID = $(this).attr('data-id'); //get the item ID
+			
+			// Clear Maps
+			updateprodMap.clear();
+			// Clear Product Item List
+			$("#updateprodItemTblBody").empty();
+			//Clear Last Update
+			$("#updateLastUpdateOrig").text('');
+			$("#updateLastUpdateSale").text('');
+			$("#updateLastUpdateDiscount").text('');
+			
+			// Load Product List Dropdown
+			reloadProdItemDD();
+			// Load Product List Table
+			reloadProdListTable(dataID);
+			
+			
 			$.post( "data/orderlist_get_data.php", { itemID: dataID }, function(result){
 				var obj = JSON.parse(result);
 				$("#updateCustomer").val(obj[0].customerID);
@@ -720,6 +780,45 @@ $(document).ready(function() {
 			});
 			
 	});
+	
+	// Load Product List Table
+	function reloadProdListTable (dataID) {
+		$.post( "data/order_proditem_get_data.php", { itemID: dataID }, function(result,status){
+			var obj = JSON.parse(result);
+			$("#updateprodItemTblBody").empty();
+			obj.forEach(function(item) {
+				const values = item.origPrice +"|"+ item.qty + "|" + item.salePrice +"|"+ item.discountAmount +"|"+ item.discountedPrice;
+				updateprodMap.set(item.prodID, values);
+				
+				var price = 0;
+				var totalDiscount = 0;
+				if (item.salePrice != "" && item.salePrice != 0) {
+					price = parseInt(item.salePrice) * parseInt(item.qty);
+				} else {
+					errorNotifNoload("Please specify the retail/selling price!");
+				}
+				
+				if (item.discountAmount != "" && item.discountAmount != 0) {
+					totalDiscount = parseInt(item.discountAmount) * parseInt(item.qty);
+					price = parseInt(price) - parseInt(totalDiscount);
+				}
+				
+				$("#updateprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.salePrice + "</td><td>" + item.qty + "</td><td>" + item.discountAmount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.prodID + "><i class='fas fa-trash'></i></a></td></tr>");
+			});
+		});	
+	}
+	
+	// Load Product List Dropdown
+	function reloadProdItemDD () {
+		$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodName", availBal: 1 }, function(result,status){
+			var obj = JSON.parse(result);
+			$("#updateProdItemName").empty();
+			obj.forEach(function(item) {
+				//data-id for prodCode
+				 $("#updateProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodCode + "</option>");
+			});
+		});
+	}
 	
 	//--- Update Item ---//	
 	$("#UpdateForm").submit(function(){
@@ -744,7 +843,7 @@ $(document).ready(function() {
 
 		if (confirm("Are you sure you want to delete this record?")) {
 		    var dataID = $(this).attr('data-id'); //get the item ID
-			$.post( "data/common_delete_data.php", { tblName: "tbl_order", fieldName: "orderID", notifName: "Order", itemID: dataID }, function(result,status){
+			$.post( "data/common_delete_data.php", { tblName: "tbl_order", fieldName: "orderID", notifName: "Order", itemID: dataID, curMod: "orderlist" }, function(result,status){
 				if (result == 'Success'){
 					loadData();
 					successNotifNoload("Order successfully deleted!");
@@ -765,17 +864,23 @@ $(document).ready(function() {
 	resetForm("#closeUpdateFormX","#UpdateForm");
 	
 	
-	//-- Load product item list when clicking Add Repackage button --//
+	//-- Load product item list when clicking Add Order button --//
 	$("#addOrderBtn").click(function(){
 		// Clear Maps
 		addprodMap.clear();
+		// Clear Product Item List
+		$("#addprodItemTblBody").empty();
+		//Clear Last Update
+		$("#addLastUpdateOrig").text('');
+		$("#addLastUpdateSale").text('');
+		$("#addLastUpdateDiscount").text('');
 		
 		$.post( "data/common_load_data.php", { tblName: "tbl_product", sortName: "prodName", availBal: 1 }, function(result,status){
 			var obj = JSON.parse(result);
 			$("#addProdItemName").empty();
 			obj.forEach(function(item) {
 				//data-id for prodCode
-				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodName +"  ("+ item.runningBal +")" + "</option>");
+				 $("#addProdItemName").append("<option title='" + item.runningBal + "' value='" + item.prodID + "' data-id='" + item.prodCode + "' data-name='"+ item.prodName +"'>" + item.prodCode + "</option>");
 			});
 		});
 		
@@ -788,6 +893,7 @@ $(document).ready(function() {
 		var prod = document.getElementById('addProdItemName');
 		var selectedIndex = prod.selectedIndex;
 		var selectedProd = prod.options[selectedIndex].value;
+		var selectedProdText = prod.options[selectedIndex].text;
 		var runbal = prod.options[selectedIndex].title;
 		var addOrigPrice = document.getElementById('addOrigPrice').value;
 		var addQty = document.getElementById('addQty').value;
@@ -800,20 +906,29 @@ $(document).ready(function() {
 		if (addprodMap.has(selectedProd)) {
 			errorNotifNoload(selprodname + " has been added already!");
 		} else {
-			if(addOrigPrice == "" || addQty == "" || addSalePrice == "" || addDiscount == "" || addDiscountedPrice == "") {
+			if(addOrigPrice == "" || addQty == "" || addSalePrice == "" || addDiscountedPrice == "") {
 				errorNotifNoload("Please enter value on either group item and quantity fields!");
 			} else if (parseInt(runbal) < parseInt(addQty)) {
 				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
 			} else {
 				var runBalTotal = parseInt(runbal) - parseInt(addQty);
+				if (addDiscount == "") {
+					addDiscount = 0;
+				}
 				const values = addOrigPrice +"|"+ addQty + "|" + addSalePrice +"|"+ addDiscount +"|"+ addDiscountedPrice +"|"+ runBalTotal;
 				addprodMap.set(selectedProd, values);
 				
 				var price = 0;
+				var totalDiscount = 0;
 				if (addSalePrice != "" && addSalePrice != 0) {
 					price = parseInt(addSalePrice) * parseInt(addQty);
 				} else {
-					price = parseInt(addOrigPrice) * parseInt(addQty);
+					errorNotifNoload("Please specify the retail/selling price!");
+				}
+				
+				if (addDiscount != "" && addDiscount != 0) {
+					totalDiscount = parseInt(addDiscount) * parseInt(addQty);
+					price = parseInt(price) - parseInt(totalDiscount);
 				}
 				
 				var curTotal = $("#addGrandTotal").val();
@@ -821,14 +936,29 @@ $(document).ready(function() {
 				$("#addGrandTotal").val(parseInt(price) + parseInt(curTotal));
 				
 				// Append the new row to the product item table
-				var newRow = "<tr><td>" + selprodname + "</td><td>" + addOrigPrice + "</td><td>" + addQty + "</td><td>" + addSalePrice + "</td><td>" + addDiscount + "</td><td>" + addDiscountedPrice + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + " data-name=" + price + "><i class='fas fa-trash'></i></a></td></tr>";
+				var newRow = "<tr><td>" + selProdCode + "</td><td>" + selprodname + "</td><td>" + addOrigPrice + "</td><td>" + addSalePrice + "</td><td>" + addQty + "</td><td>" + addDiscount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
 				$("#addprodItemTbl tbody").append(newRow);
+				
+				
+				// Check and Save if prices are changed
+				$.post( "data/update_prices.php", { prodCode: selProdCode, addOrigPrice: addOrigPrice, Oprice: Oprice, addSalePrice: addSalePrice, Sprice: Sprice, addDiscountedPrice: addDiscountedPrice, Dprice: Dprice }, function(result,status){
+					if (result == 'Success'){
+						//successNotifNoload("success!");
+					} 
+				});
+				
+				Oprice = "";
+				Sprice = "";
+				Dprice = "";
 				
 				$("#addOrigPrice").val('');
 				$("#addQty").val('');
 				$("#addSalePrice").val('');
 				$("#addDiscount").val('');
 				$("#addDiscountedPrice").val('');
+				$("#addLastUpdateOrig").text('');
+				$("#addLastUpdateSale").text('');
+				$("#addLastUpdateDiscount").text('');
 
 				successNotifNoload("Product Item successfully added!");
 			}
@@ -855,16 +985,93 @@ $(document).ready(function() {
 			
 	});
 	
-	// Compute Amount Paid and Balance
+	// Add: Compute Amount Paid and Balance
 	$("#addAmountPaid").keyup(function(e){
-		if ($(this).val() != "") {
-			var total = $("#addGrandTotal").val();
-			var amount = $("#addAmountPaid").val();
-			$("#addBalance").val(parseInt(total) -  parseInt(amount));
-		} else if ($(this).val() == "") {
-			$("#addBalance").val("0");
+		var gtotal = parseInt($("#addGrandTotal").val());
+		if (gtotal != 0){
+			if ($(this).val() != "") {
+				var total = $("#addGrandTotal").val();
+				var amount = $("#addAmountPaid").val();
+				$("#addBalance").val(parseInt(total) -  parseInt(amount));
+			} else if ($(this).val() == "") {
+				$("#addBalance").val("0");
+			}
+		} else {
+			$(this).val("");
+			errorNotifNoload("Please add product item first!");
 		}
     });
+	
+	// Update: Compute Amount Paid and Balance
+	$("#updateAmountPaid").keyup(function(e){
+		var gtotal = parseInt($("#updateGrandTotal").val());
+		if (gtotal != 0){
+			if ($(this).val() != "") {
+				var total = $("#updateGrandTotal").val();
+				var amount = $("#updateAmountPaid").val();
+				$("#updateBalance").val(parseInt(total) -  parseInt(amount));
+			} else if ($(this).val() == "") {
+			$("#updateBalance").val("0");
+			}
+		} else {
+			$(this).val("");
+			errorNotifNoload("Please add product item first!");
+		}
+    });
+	
+	// Add: Prod Item load prices when change select value
+	$("#addProdItemName").change(function(){
+		$("#addOrigPrice").empty();
+		$("#addSalePrice").empty();
+		$("#addDiscountedPrice").empty();
+		$("#addDiscount").empty();
+		$("#addQty").empty();
+		$("#addLastUpdateOrig").text('');
+		$("#addLastUpdateSale").text('');
+		$("#addLastUpdateDiscount").text('');
+		var prodSelected = $("#addProdItemName").val();
+		$.post( "data/prod_get_data.php", { itemID: prodSelected }, function(result){
+			var obj = JSON.parse(result);
+			$("#addOrigPrice").val(obj[0].origPrice);
+			$("#addSalePrice").val(obj[0].salePrice);
+			$("#addDiscountedPrice").val(obj[0].discountedPrice);
+			
+			Oprice = obj[0].origPrice;
+			Sprice = obj[0].salePrice;
+			Dprice = obj[0].discountedPrice;
+			
+			$("#addLastUpdateOrig").text("Last Update: " + new Date(obj[0].lastUpdateOrigPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+			$("#addLastUpdateSale").text("Last Update: " + new Date(obj[0].lastUpdateSalePrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+			$("#addLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+		});
+	});
+	
+	// Update: Prod Item load prices when change select value
+	$("#updateProdItemName").change(function(){
+		$("#updateOrigPrice").empty();
+		$("#updateSalePrice").empty();
+		$("#updateDiscountedPrice").empty();
+		$("#updateDiscount").empty();
+		$("#updateQty").empty();
+		$("#updateLastUpdateOrig").text('');
+		$("#updateLastUpdateSale").text('');
+		$("#updateLastUpdateDiscount").text('');
+		var prodSelected = $("#updateProdItemName").val();
+		$.post( "data/prod_get_data.php", { itemID: prodSelected }, function(result){
+			var obj = JSON.parse(result);
+			$("#updateOrigPrice").val(obj[0].origPrice);
+			$("#updateSalePrice").val(obj[0].salePrice);
+			$("#updateDiscountedPrice").val(obj[0].discountedPrice);
+			
+			Oprice = obj[0].origPrice;
+			Sprice = obj[0].salePrice;
+			Dprice = obj[0].discountedPrice;
+			
+			$("#updateLastUpdateOrig").text("Last Update: " + new Date(obj[0].lastUpdateOrigPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+			$("#updateLastUpdateSale").text("Last Update: " + new Date(obj[0].lastUpdateSalePrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+			$("#updateLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+		});
+	});
 	
 	// Initialize Search Dropdown
 	$('.select2').select2();

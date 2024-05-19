@@ -213,23 +213,26 @@
 							  </div>
 							  <div class="col-sm-5">
 								<div class="form-group">
-								  <input type="number" id="addOrigPrice" name="addOrigPrice" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter original price" min="0" max="9000000" step="1">
+								  <input type="number" id="addOrigPrice" name="addOrigPrice" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter cost/original price" min="0" max="9000000" step="1">
 								</div>
 							  </div>
 							</div>
-							<table class="table" id="addprodItemTbl">
-							  <thead>
-								<tr>
-								  <th>Product Code</th>
-								  <th>Product Name</th>
-								  <th>Product Details</th>
-								  <th>Original Price</th>
-								  <th style="width: 40px">Action</th>
-								</tr>
-							  </thead>
-							  <tbody>
-							  </tbody>
-							</table>
+							
+							<div class="scrollable-wrapper">
+								<table class="table" id="addprodItemTbl">
+								  <thead>
+									<tr>
+									  <th>Product Code</th>
+									  <th>Product Name</th>
+									  <th>Product Details</th>
+									  <th>Cost / Original Price</th>
+									  <th style="width: 40px">Action</th>
+									</tr>
+								  </thead>
+								  <tbody id="addprodItemTblBody">
+								  </tbody>
+								</table>
+							</div>
 
                       </div>
                     </div>
@@ -390,23 +393,26 @@
 							  </div>
 							  <div class="col-sm-5">
 								<div class="form-group">
-								  <input type="number" id="updateOrigPrice" name="updateOrigPrice" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter original price" min="0" max="9000000" step="1">
+								  <input type="number" id="updateOrigPrice" name="updateOrigPrice" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" class="form-control" placeholder="Enter cost/original price" min="0" max="9000000" step="1">
 								</div>
 							  </div>
 							</div>
-							<table class="table" id="updateprodItemTbl">
-							  <thead>
-								<tr>
-								  <th>Product Code</th>
-								  <th>Product Name</th>
-								  <th>Product Details</th>
-								  <th>Original Price</th>
-								  <th style="width: 40px">Action</th>
-								</tr>
-							  </thead>
-							  <tbody id="updateprodItemTblBody">
-							  </tbody>
-							</table>
+							
+							<div class="scrollable-wrapper">
+								<table class="table" id="updateprodItemTbl">
+								  <thead>
+									<tr>
+									  <th>Product Code</th>
+									  <th>Product Name</th>
+									  <th>Product Details</th>
+									  <th>Cost / Original Price</th>
+									  <th style="width: 40px">Action</th>
+									</tr>
+								  </thead>
+								  <tbody id="updateprodItemTblBody">
+								  </tbody>
+								</table>
+							</div>
 
                       </div>
                     </div>
@@ -532,7 +538,7 @@
                       <div class="card-header">
                         <h4 class="card-title">Product Item(s)</h4>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body scrollable-wrapper">
 					  
 							<table class="table">
 							  <thead>
@@ -540,7 +546,7 @@
 								<th>Product Code</th>
 								<th>Product Name</th>
 								<th>Product Details</th>
-								<th>Original Price</th>
+								<th>Cost / Original Price</th>
 							  </tr>
 							  </thead>
 							  <tbody id="viewprodItemTblBody">
@@ -724,7 +730,7 @@ $(document).ready(function() {
 
 		if (confirm("Are you sure you want to delete this record?")) {
 		    var dataID = $(this).attr('data-id'); //get the item ID
-			$.post( "data/common_delete_data.php", { tblName: "tbl_supplier", fieldName: "supplierID", notifName: "Supplier", itemID: dataID }, function(result,status){
+			$.post( "data/common_delete_data.php", { tblName: "tbl_supplier", fieldName: "supplierID", notifName: "Supplier", itemID: dataID, curMod: "suppliers" }, function(result,status){
 				if (result == 'Success'){
 					loadData();
 					successNotifNoload("Supplier successfully deleted!");
@@ -847,7 +853,11 @@ $(document).ready(function() {
 					}
 				});
 				
-				successNotifNoload("Product Item successfully added!");
+				$("#updateProdCode").val("");
+				$("#updateProdName").val("");
+				$("#updateProdDetails").val("");
+				$("#updateOrigPrice").val("");
+				//successNotifNoload("Product Item successfully added!");
 			}
 		}
 		
@@ -860,6 +870,9 @@ $(document).ready(function() {
 	$("#addSupplierBtn").click(function(){
 		// Clear Maps
 		addprodMap.clear();
+		
+		// Clear Product Item List
+		$("#addprodItemTblBody").empty();
 	});
 	
 	

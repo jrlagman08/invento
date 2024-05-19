@@ -52,8 +52,8 @@
 
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <table id="loadDataTable" class="table table-bordered table-striped">
+              <div class="card-body p-0">
+                <table id="loadDataTable" class="table table-striped">
 			  <!--<div class="card-body p-0">
                 <table id="loadDataTable" class="table table-striped">-->
                     <!-- Query data will be listed here - realtime update -->

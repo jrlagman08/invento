@@ -27,3 +27,17 @@ td.colGreen {
 .req {
 	color: red;
 }
+
+.scrollable-wrapper {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.scrollable-wrapper-gallery {
+  max-height: 500px;
+  overflow: auto;
+}
+
+.scrollable-wrapper-gallery table thead th , .scrollable-wrapper table thead th {
+	vertical-align: middle!important;
+}

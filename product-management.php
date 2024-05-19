@@ -61,8 +61,8 @@
                 </div>
               </div>
               <!-- /.card-header -->
-			  <div class="card-body">
-                <table id="loadDataTable" class="table table-bordered table-striped">
+			  <div class="card-body p-0">
+                <table id="loadDataTable" class="table table-striped">
                <!--<div class="card-body p-0">
                 <table id="loadDataTable" class="table table-striped">-->
                   <thead>
@@ -142,7 +142,7 @@
                           <div class="card-header">
                             <h4 class="card-title">Image Gallery</h4>
                           </div>
-                          <div class="card-body">
+                          <div class="card-body scrollable-wrapper-gallery">
                             <div class="row" id="imgGallery">
                               <!---- insert image gallery ---->
                             </div>
@@ -313,7 +313,7 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Original Price <span class="req">*</span></label>
+                    <label>Cost / Original Price <span class="req">*</span></label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -322,16 +322,16 @@
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Sale Price</label>
+                    <label>Retail / Selling Price <span class="req">*</span></label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="addsalePrice" name="addsalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" value="0">
+                      <input type="text" id="addsalePrice" name="addsalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" value="0" required>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Discounted Price</label>
+                    <label>Customer Discounted Price</label>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -484,25 +484,28 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Original Price <span class="req">*</span></label>
+                    <label>Cost / Original Price <span class="req">*</span></label>
+					<br/><sup id="updateLastUpdateOrig" style="color:red;"></sup>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
                       <input type="text" id="updateorigPrice" name="updateorigPrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" required>
-                    </div>
+					</div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Sale Price</label>
+                    <label>Retail / Selling Price <span class="req">*</span></label>
+					<br/><sup id="updateLastUpdateSale" style="color:red;"></sup>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
                       </div>
-                      <input type="text" id="updatesalePrice" name="updatesalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)">
-                    </div>
+                      <input type="text" id="updatesalePrice" name="updatesalePrice" class="form-control" minlength="1" maxlength="7" onkeypress="return onlyNumberKey(event)" required>
+					</div>
                   </div>
                   <div class="col-sm-4">
-                    <label>Discounted Price</label>
+                    <label>Customer Discounted Price</label>
+					<br/><sup id="updateLastUpdateDiscount" style="color:red;"></sup>
                     <div class="input-group">
                       <div class="input-group-prepend">
                         <span class="input-group-text">₱</span>
@@ -515,6 +518,9 @@
               </div>
               <div class="modal-footer justify-content-between">
 				<input id="updateID" name="updateID" class="form-control" type="hidden">
+				<input id="updateOrigP" name="updateOrigP" class="form-control" type="hidden">
+				<input id="updateSaleP" name="updateSaleP" class="form-control" type="hidden">
+				<input id="updateDiscountP" name="updateDiscountP" class="form-control" type="hidden">
                 <button type="button" id="closeUpdateForm" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
               </div>
@@ -636,13 +642,13 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Original Price</label>: ₱<span id="origPrice"></span>
+                    <label>Cost / Original Price</label>: ₱<span id="origPrice"></span><br/><sup id="viewLastUpdateOrig" style="color:red;"></sup>
                   </div>
                   <div class="col-sm-4">
-                    <label>Sale Price</label>: ₱<span id="salePrice"></span>
+                    <label>Retail / Selling Price</label>: ₱<span id="salePrice"></span><br/><sup id="viewLastUpdateSale" style="color:red;"></sup>
                   </div>
                   <div class="col-sm-4">
-                    <label>Discounted Price</label>: ₱<span id="discountedPrice"></span>
+                    <label>Customer Discounted Price</label>: ₱<span id="discountedPrice"></span><br/><sup id="viewLastUpdateDiscount" style="color:red;"></sup>
                   </div>
                 </div>
 				<br/>
@@ -652,7 +658,7 @@
                       <div class="card-header">
                         <h4 class="card-title">Image Gallery</h4>
                       </div>
-                      <div class="card-body">
+                      <div class="card-body scrollable-wrapper-gallery">
                         <div class="row" id="imgGalleryView">
                           <!---- insert image gallery ---->
                         </div>
@@ -1087,6 +1093,13 @@ $(document).ready(function() {
 				$("#origPrice").text(obj[0].origPrice);
 				$("#salePrice").text(obj[0].salePrice);
 				$("#discountedPrice").text(obj[0].discountedPrice);
+				
+				$("#viewLastUpdateOrig").text("Last Update: " + new Date(obj[0].lastUpdateOrigPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
+				$("#viewLastUpdateSale").text("Last Update: " + new Date(obj[0].lastUpdateSalePrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+
+				$("#viewLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
 				$("#viewID").attr('data-id',dataID);
 				makeQrCodeView(obj[0].prodCode);
 				loadImgData(dataID,"imgGalleryView");
@@ -1118,6 +1131,17 @@ $(document).ready(function() {
 				$("#updateorigPrice").val(obj[0].origPrice);
 				$("#updatesalePrice").val(obj[0].salePrice);
 				$("#updatediscountedPrice").val(obj[0].discountedPrice);
+				
+				$("#updateLastUpdateOrig").text("Last Update: " + new Date(obj[0].lastUpdateOrigPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
+				$("#updateLastUpdateSale").text("Last Update: " + new Date(obj[0].lastUpdateSalePrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+
+				$("#updateLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
+				
+				$("#updateOrigP").val(obj[0].origPrice);
+				$("#updateSaleP").val(obj[0].salePrice);
+				$("#updateDiscountP").val(obj[0].discountedPrice);
+				
 				$("#updateID").val(dataID);
 				setSubCat(obj[0].categoryID,obj[0].subCategoryID);
 				makeQrCode("updateprodCode","updategenQRCode");

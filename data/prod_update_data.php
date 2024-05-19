@@ -57,6 +57,22 @@
 			WHERE prodID ='{$updateID}'";
 		
 		if(mysqli_query($connection, $sql)){
+			
+			if(isset($_POST['updateOrigP']) && intval($_POST['updateOrigP']) <> intval($updateorigPrice)) {
+				$sqlOrigP = "UPDATE tbl_product SET lastUpdateOrigPrice = CURRENT_TIMESTAMP WHERE prodID ={$updateID}";
+				$result = mysqli_query($connection, $sqlOrigP);
+			}
+			
+			if(isset($_POST['updateSaleP']) && intval($_POST['updateSaleP']) <> intval($updatesalePrice)) {
+				$sqlSaleP = "UPDATE tbl_product SET lastUpdateSalePrice = CURRENT_TIMESTAMP WHERE prodID ={$updateID}";
+				$result = mysqli_query($connection, $sqlSaleP);
+			}
+			
+			if(isset($_POST['updateDiscountP']) && intval($_POST['updateDiscountP']) <> intval($updatediscountedPrice)) {
+				$sqlDiscountP = "UPDATE tbl_product SET lastUpdateDiscountedPrice = CURRENT_TIMESTAMP WHERE prodID ={$updateID}";
+				$result = mysqli_query($connection, $sqlDiscountP);
+			}
+				
 			echo "Success";
 		}
 		else {

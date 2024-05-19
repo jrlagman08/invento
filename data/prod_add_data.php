@@ -65,7 +65,7 @@
 			'{$adddiscountedPrice}',
 			'{$addlowQty}',
 			'{$addhighQty}')";
-		}
+		
 		if(mysqli_query($connection, $sql)){
 			echo "Success";
 		}
