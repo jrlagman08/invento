@@ -803,7 +803,7 @@ $(document).ready(function() {
 					price = parseInt(price) - parseInt(totalDiscount);
 				}
 				
-				$("#updateprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.salePrice + "</td><td>" + item.qty + "</td><td>" + item.discountAmount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.prodID + "><i class='fas fa-trash'></i></a></td></tr>");
+				$("#updateprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.salePrice + "</td><td>" + item.qty + "</td><td>" + item.discountAmount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.prodID + " data-id=" + item.orderitemID + " data-name=" + item.qty + "><i class='fas fa-trash'></i></a></td></tr>");
 			});
 		});	
 	}
@@ -985,6 +985,30 @@ $(document).ready(function() {
 			
 	});
 	
+	//--- Remove Product Item on the table (Update) ---//	
+	$(document).delegate(".removeprodItemUpdate", "click", function() {
+		
+		if (confirm("Are you sure you want to delete this product item?")) {
+			updateprodMap.delete($(this).attr('id'));
+			$(this).parent().parent().remove();
+			
+			//Delete Product Item to DB
+			$.post( "data/order_proditem_delete_data.php", { ordItemID: $(this).attr('data-id'), prodID: $(this).attr('id'), qty: $(this).attr('data-name'), ordID: $("#updateID").val() }, function(result,status){
+				if (result == 'Success'){
+					// Load Product List Dropdown
+					reloadProdItemDD();
+					// Load Product List Table
+					reloadProdListTable($("#updateID").val());
+					successNotifNoload("Product Item successfully deleted!");
+				} 
+				else {
+					errorNotifNoload(result);
+				}
+			});
+		}
+			
+	});
+	
 	// Add: Compute Amount Paid and Balance
 	$("#addAmountPaid").keyup(function(e){
 		var gtotal = parseInt($("#addGrandTotal").val());
@@ -1072,6 +1096,65 @@ $(document).ready(function() {
 			$("#updateLastUpdateDiscount").text("Last Update: " + new Date(obj[0].lastUpdateDiscountedPrice).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
 		});
 	});
+	
+	
+	//-- Insert Product Item in the Table (Update) --//
+	/*$("#updateprodItemBtn").click(function(){
+	
+		var prod = document.getElementById('updateProdItemName');
+		var selectedIndex = prod.selectedIndex;
+		var selectedProd = prod.options[selectedIndex].value;
+		var selectedProdText = prod.options[selectedIndex].text;
+		var runbal = parseInt(prod.options[selectedIndex].title);
+		var updateGroup = parseInt(document.getElementById('updateGroup').value);
+		var updateQty = parseInt(document.getElementById('updateQty').value);
+		var selprodname = prod.options[selectedIndex].getAttribute("data-name");
+            
+		if (updateprodMap.has(selectedProd)) {
+			errorNotifNoload(selprodname + " has been added already!");
+		} else {
+			if(updateGroup == "" || updateQty == "") {
+				errorNotifNoload("Please enter value on either group item and quantity fields!");
+			} else if (parseInt(runbal) < (parseInt(updateGroup)*parseInt(updateQty))) {
+				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
+			} else {
+				var runBalTotal = parseInt(runbal) - (parseInt(updateGroup)*parseInt(updateQty));
+				const values = updateGroup +"|"+ updateQty + "|" + runBalTotal +"|"+ selectedProd;
+				updateprodMap.set(selectedProd, values);
+				// Append the new row to the product item table
+				var newRow = "<tr><td>" + selectedProdText + "</td><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + " data-id=" + $("#updateID").val() + "><i class='fas fa-trash'></i></a></td></tr>";
+				$("#updateprodItemTbl tbody").append(newRow);
+				
+				//Save Product Item to DB
+				$.post( "data/proditem_add_data.php", { repackageprodID: $("#updateID").val(), singleprodID: selectedProd, prodGroup: updateGroup, prodQty: updateQty, runBal: runBalTotal }, function(result,status){
+					if (result == 'Success'){
+						// Load Product List Dropdown
+						reloadProdItemDD();
+						// Check balance Repackage
+						checkBalRepackage();
+						// Load Product List Table
+						reloadProdListTable($("#updateID").val());
+						successNotifNoload("Product Item successfully added!");
+					} 
+					else {
+						errorNotifNoload(result);
+					}
+				});
+				
+				$("#updateGroup").val('');
+				let mapSize = updateprodMap.size;
+				if (mapSize > 0) {
+					$("#updateQty").prop("readonly", true);
+				} else {
+					$("#updateQty").val('');
+					$("#updateQty").prop("readonly", false);
+				}
+				
+			}
+		}
+		
+	});*/
+	
 	
 	// Initialize Search Dropdown
 	$('.select2').select2();

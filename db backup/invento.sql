@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 26, 2024 at 10:06 AM
+-- Generation Time: May 20, 2024 at 02:19 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.9
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `tbl_category` (
   `categoryID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`categoryID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_category`
@@ -292,17 +292,18 @@ CREATE TABLE IF NOT EXISTS `tbl_order` (
   KEY `customerID` (`customerID`),
   KEY `userID` (`userID`),
   KEY `paymentID` (`paymentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_order`
 --
 
 INSERT INTO `tbl_order` (`orderID`, `orderDate`, `orderNum`, `customerID`, `userID`, `paymentID`, `paymentref`, `amountPaid`, `grandTotal`, `balance`) VALUES
-(3, '2024-03-04 00:26:00', 'AA11', 1, 5, 2, 'AA11', '2411', '0', '241'),
-(4, '2024-03-04 00:29:00', 'FFF123', 7, 5, 1, 'FGG123', '151511111', '0', '10'),
 (5, '2024-04-16 12:50:00', 'OR123', 12, 5, 1, 'PAY123', '100', '160', '60'),
-(6, '2024-04-02 13:31:00', 'FFFF123', 4, 5, 3, 'FFFF123aa', '800', '800', '0');
+(6, '2024-04-02 13:31:00', 'FFFF123v', 4, 5, 3, 'FFFF123aa', '800', '800', '0'),
+(8, '2024-05-20 01:02:00', 'asd123', 12, 5, 1, 'asd111', '12', '12', '0'),
+(9, '2024-05-20 01:27:00', 'www123', 8, 5, 1, 'www1234', '50', '50', '0'),
+(12, '2024-05-20 02:09:00', 'cvbc', 12, 5, 1, 'ncvbvcb', '50', '50', '0');
 
 -- --------------------------------------------------------
 
@@ -323,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `tbl_orderitem` (
   PRIMARY KEY (`orderitemID`),
   KEY `orderID` (`orderID`),
   KEY `prodID` (`prodID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_orderitem`
@@ -331,8 +332,7 @@ CREATE TABLE IF NOT EXISTS `tbl_orderitem` (
 
 INSERT INTO `tbl_orderitem` (`orderitemID`, `orderID`, `prodID`, `origPrice`, `salePrice`, `discountedPrice`, `discountAmount`, `qty`) VALUES
 (2, 5, 3, '100', '180', '80', '20', 2),
-(3, 6, 3, '200', '250', '0', '0', 4),
-(4, 6, 4, '100', '150', '50', '50', 7);
+(3, 6, 3, '200', '250', '0', '0', 4);
 
 -- --------------------------------------------------------
 
@@ -382,6 +382,9 @@ CREATE TABLE IF NOT EXISTS `tbl_product` (
   `lowQty` int NOT NULL DEFAULT '0',
   `highQty` int NOT NULL DEFAULT '0',
   `runningBal` int NOT NULL DEFAULT '0',
+  `lastUpdateOrigPrice` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastUpdateSalePrice` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastUpdateDiscountedPrice` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `isRepackage` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`prodID`),
   KEY `warehouseID` (`warehouseID`),
@@ -391,19 +394,20 @@ CREATE TABLE IF NOT EXISTS `tbl_product` (
   KEY `colorID` (`colorID`),
   KEY `seasonID` (`seasonID`),
   KEY `uomID` (`uomID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_product`
 --
 
-INSERT INTO `tbl_product` (`prodID`, `categoryID`, `subCategoryID`, `prodCode`, `prodName`, `shortDesc`, `fullDesc`, `classificationID`, `colorID`, `rackID`, `seasonID`, `uomID`, `warehouseID`, `origPrice`, `salePrice`, `discountedPrice`, `lowQty`, `highQty`, `runningBal`, `isRepackage`) VALUES
-(1, 2, 1, 'PR111', 'Test Prod 111', 'Short Desc', 'Full Desc', 4, 14, 1, 1, 3, 1, '20', '15', '5', 50, 80, 80, 0),
-(2, 4, 0, 'SAM123', 'Same Same', 'descd', 'desc', 5, 23, 2, 2, 3, 2, '10', '5', '5', 50, 80, 78, 0),
-(3, 3, 3, 'RP333', 'Repack 3', 'repack 3', 'repack 3', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 80, 94, 1),
-(4, 3, 4, 'GMA123', 'SubCat Test', 'SubCat Test', 'SubCat Test', 1, 14, 1, 3, 3, 1, '100', '50', '50', 60, 60, 25, 0),
-(10, 3, 3, 'RP14Apr', 'RP14Apr', 'RP14Apr', 'RP14Apr', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 60, 2, 1),
-(11, 3, 3, 'TodayRP', 'TodayRP', 'TodayRP', 'TodayRP', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 60, 4, 1);
+INSERT INTO `tbl_product` (`prodID`, `categoryID`, `subCategoryID`, `prodCode`, `prodName`, `shortDesc`, `fullDesc`, `classificationID`, `colorID`, `rackID`, `seasonID`, `uomID`, `warehouseID`, `origPrice`, `salePrice`, `discountedPrice`, `lowQty`, `highQty`, `runningBal`, `lastUpdateOrigPrice`, `lastUpdateSalePrice`, `lastUpdateDiscountedPrice`, `isRepackage`) VALUES
+(1, 2, 1, 'PR111', 'Test Prod 111', 'Short Desc', 'Full Desc', 4, 14, 1, 1, 3, 1, '20', '15', '5', 50, 80, 74, '2024-05-18 13:31:24', '2024-05-18 13:31:24', '2024-05-18 13:31:24', 0),
+(2, 4, 0, 'SAM123', 'Same Same', 'descd', 'desc', 5, 23, 2, 2, 3, 2, '12', '6', '6', 50, 80, 70, '2024-05-19 07:03:46', '2024-05-19 07:03:46', '2024-05-19 07:03:46', 0),
+(3, 3, 3, 'RP333', 'Repack 3', 'repack 3', 'repack 3', 1, 14, 1, 3, 3, 1, '100', '50', '50', 30, 80, 2, '2024-05-18 13:31:24', '2024-05-18 13:31:24', '2024-05-18 13:31:24', 1),
+(4, 3, 4, 'GMA123', 'SubCat Test', 'SubCat Test', 'SubCat Test', 1, 14, 1, 3, 3, 1, '65', '82', '70', 60, 60, 21, '2024-05-18 15:18:14', '2024-05-18 15:17:55', '2024-05-18 15:14:38', 0),
+(10, 3, 3, 'RP14Apr', 'RP14Apr', 'RP14Apr', 'RP14Apr', 1, 14, 1, 3, 3, 1, '30', '45', '40', 30, 60, 0, '2024-05-18 15:18:50', '2024-05-18 15:18:50', '2024-05-18 15:18:50', 1),
+(13, 3, 3, 'PANTY123', 'Panty New', 'Panty New', 'Panty New', 1, 14, 1, 3, 3, 1, '50', '60', '55', 30, 50, 0, '2024-05-18 13:39:20', '2024-05-18 13:39:20', '2024-05-18 13:39:20', 0),
+(14, 3, 3, 'AB123', 'AB123 Prod', 'AB123 Prod', 'AB123 Prod', 1, 14, 1, 3, 3, 1, '50', '60', '0', 20, 80, 2, '2024-05-19 04:04:01', '2024-05-19 04:04:01', '2024-05-19 04:04:01', 1);
 
 -- --------------------------------------------------------
 
@@ -495,7 +499,7 @@ CREATE TABLE IF NOT EXISTS `tbl_repackageitem` (
   PRIMARY KEY (`repackageitemID`),
   KEY `prodID` (`single_prodID`),
   KEY `repackageID` (`repackage_prodID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_repackageitem`
@@ -503,7 +507,11 @@ CREATE TABLE IF NOT EXISTS `tbl_repackageitem` (
 
 INSERT INTO `tbl_repackageitem` (`repackageitemID`, `repackage_prodID`, `single_prodID`, `prodGroup`, `prodQty`) VALUES
 (16, 10, 2, 1, 2),
-(17, 11, 2, 2, 4);
+(18, 10, 4, 1, 2),
+(19, 14, 2, 1, 2),
+(20, 3, 2, 2, 2),
+(21, 14, 1, 3, 2),
+(22, 14, 4, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -540,7 +548,7 @@ CREATE TABLE IF NOT EXISTS `tbl_subcategory` (
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`subCategoryID`),
   KEY `categoryID` (`categoryID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_subcategory`
@@ -574,7 +582,7 @@ CREATE TABLE IF NOT EXISTS `tbl_supplier` (
   `econtactEmail` varchar(50) NOT NULL,
   `econtactMobile` varchar(50) NOT NULL,
   PRIMARY KEY (`supplierID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_supplier`
@@ -583,8 +591,7 @@ CREATE TABLE IF NOT EXISTS `tbl_supplier` (
 INSERT INTO `tbl_supplier` (`supplierID`, `name`, `email`, `mobile`, `phone`, `address`, `address2`, `city`, `province`, `zipcode`, `country`, `econtactPerson`, `econtactEmail`, `econtactMobile`) VALUES
 (1, 'PMC Printing Press', 'naw@yahoo.com', '09222159967', 'na', '#105 4th St Bel; 9th and 10th ave caloocan city', 'na', 'Caloocan', 'NCR', 0, 'Philippines', 'Sherry', 'sa@yahoo.com', '09222159967'),
 (3, 'china', 'na@yahoo.com', 'na', 'na', 'china', 'china', 'china', 'na', 5154, 'china', 'na', 'na@yahoo.com', 'na'),
-(4, 'Megaworld Trucking Services Corp', 'na@yahoo.com', 'na', 'na', '6243 sevilla st; del pan tondo, manila', 'na', 'Manila', 'NCR', 0, 'Philippines', 'na', 'na@google.com', 'na'),
-(5, 'SP101', 'SP101@gmail.com', '1243587654', '12345678908', 'SP101', 'SP101', 'SP101', 'SP101', 123, 'SP101', 'SP101', 'SP101@gmail.com', '23453234234');
+(4, 'Megaworld Trucking Services Corp', 'na@yahoo.com', 'na', 'na', '6243 sevilla st; del pan tondo, manila', 'na', 'Manila', 'NCR', 0, 'Philippines', 'na', 'na@google.com', 'na');
 
 -- --------------------------------------------------------
 
@@ -602,16 +609,19 @@ CREATE TABLE IF NOT EXISTS `tbl_supplieritem` (
   `origPrice` decimal(10,0) NOT NULL,
   PRIMARY KEY (`supplieritemID`),
   KEY `supplierID` (`supplierID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `tbl_supplieritem`
 --
 
 INSERT INTO `tbl_supplieritem` (`supplieritemID`, `supplierID`, `prodCode`, `prodName`, `prodDetails`, `origPrice`) VALUES
-(1, 5, 'Pitem1', 'Pitem1aaa', 'Pitem1aaaffff', '10'),
-(3, 5, 'Ass', 'Dvv', 'asd', '23'),
-(4, 5, 'Test123', 'New Product', 'New Product', '50');
+(5, 1, '1', '1', '1', '1'),
+(8, 3, 'PC13', 'PC13', 'PC13', '13'),
+(10, 3, 'PC15', 'PC15', 'PC15', '15'),
+(11, 3, 'asd', 'asd', 'asd', '21'),
+(13, 3, 'wa', 'wa', 'wa', '123'),
+(14, 3, 'ww', 'ww', 'ww', '1');
 
 -- --------------------------------------------------------
 

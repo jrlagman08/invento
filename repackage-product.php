@@ -1582,7 +1582,7 @@ $(document).ready(function() {
 				const values = updateGroup +"|"+ updateQty + "|" + runBalTotal +"|"+ selectedProd;
 				updateprodMap.set(selectedProd, values);
 				// Append the new row to the product item table
-				var newRow = "<tr><td>" + selectedProdText + "</td><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
+				var newRow = "<tr><td>" + selectedProdText + "</td><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + " data-id=" + $("#updateID").val() + "><i class='fas fa-trash'></i></a></td></tr>";
 				$("#updateprodItemTbl tbody").append(newRow);
 				
 				//Save Product Item to DB
