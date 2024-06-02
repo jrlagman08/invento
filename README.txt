@@ -1,4 +1,5 @@
 *Order List
+	- delete update product qty
 	-update product item
 *Report
 	-Sales (for polishing)

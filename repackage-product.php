@@ -808,7 +808,7 @@
               </div>
               <div class="modal-footer justify-content-between">
                 <button type="button" id="closeViewForm" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="viewID" class="btn btn-primary updateItem" data-id="" data-toggle="modal" data-target="#modal-default-update" data-dismiss="modal">Update Repackage</button>
+                <button type="button" id="viewID" class="btn btn-primary updateItem" data-id="" data-dismiss="modal">Update Repackage</button>
               </div>
 
           </div>
@@ -1309,6 +1309,10 @@ $(document).ready(function() {
 	
 	//--- Get Item to Update ---//	
 	$(document).delegate(".updateItem", "click", function() {
+		
+			//Hide Modal
+			$("#modal-default-view").modal("hide");
+			$("#modal-default-view").on('hidden.bs.modal', () => {$("#modal-default-update").modal();});
 
 		    var dataID = $(this).attr('data-id'); //get the item ID
 			
