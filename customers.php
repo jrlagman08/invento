@@ -409,7 +409,7 @@
               </div>
               <div class="modal-footer justify-content-between">
                 <button type="button" id="closeViewForm" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="viewID" class="btn btn-primary updateItem" data-id="" data-dismiss="modal">Update Customer</button>
+                <button type="button" id="viewID" class="btn btn-primary updateItem" data-id="" data-dismiss="modal" data-toggle="modal"data-target="#modal-default-update">Update Customer</button>
               </div>
 
           </div>
@@ -512,10 +512,6 @@ $(document).ready(function() {
 	
 	//--- Get Item to Update ---//	
 	$(document).delegate(".updateItem", "click", function() {
-		
-			//Hide Modal
-			$("#modal-default-view").modal("hide");
-			$("#modal-default-view").on('hidden.bs.modal', () => {$("#modal-default-update").modal();});
 
 		    var dataID = $(this).attr('data-id'); //get the item ID
 			$.post( "data/customers_get_data.php", { itemID: dataID }, function(result){
@@ -580,6 +576,14 @@ $(document).ready(function() {
 	resetForm("#closeAddFormX","#AddForm");
 	resetForm("#closeUpdateForm","#UpdateForm");
 	resetForm("#closeUpdateFormX","#UpdateForm");
+	
+	// Add modal-open class on boday tag
+	$("#viewID").click( function(){
+		 setTimeout(function() { 
+			jQuery("body").addClass("modal-open");
+			jQuery("body").css('padding-right', '17px');
+		}, 500);
+	});
 	
 });
 </script>

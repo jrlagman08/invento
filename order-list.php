@@ -563,7 +563,7 @@
               </div>
               <div class="modal-footer justify-content-between">
                 <button type="button" id="closeViewForm" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="viewID" class="btn btn-primary" data-id="" data-dismiss="modal">Update Order</button>
+                <button type="button" id="viewID" class="btn btn-primary updateItem" data-id="" data-dismiss="modal" data-toggle="modal"data-target="#modal-default-update">Update Order</button>
               </div>
 
           </div>
@@ -748,46 +748,6 @@ $(document).ready(function() {
 	//--- Get Item to Update ---//	
 	$(document).delegate(".updateItem", "click", function() {
 		
-		    var dataID = $(this).attr('data-id'); //get the item ID
-			
-			// Clear Maps
-			updateprodMap.clear();
-			// Clear Product Item List
-			$("#updateprodItemTblBody").empty();
-			//Clear Last Update
-			$("#updateLastUpdateOrig").text('');
-			$("#updateLastUpdateSale").text('');
-			$("#updateLastUpdateDiscount").text('');
-			
-			// Load Product List Dropdown
-			reloadProdItemDD();
-			// Load Product List Table
-			reloadProdListTable(dataID);
-			
-			
-			$.post( "data/orderlist_get_data.php", { itemID: dataID }, function(result){
-				var obj = JSON.parse(result);
-				$("#updateCustomer").val(obj[0].customerID);
-				$("#updateOR").val(obj[0].orderNum);
-				$("#updateOrderDateInput").val(new Date(obj[0].orderDate).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""));
-				$("#updateGrandTotal").val(obj[0].grandTotal);
-				$("#updatePayment").val(obj[0].paymentID);
-				$("#updatePaymentRef").val(obj[0].paymentref);
-				$("#updateAmountPaid").val(obj[0].amountPaid);
-				$("#updateBalance").val(obj[0].balance);
-				$("#updateCashier").val(obj[0].userID);
-				$("#updateID").val(dataID);
-			});
-			
-	});
-	
-	//--- Get Item to Update usig viewID ---//	
-	$(document).delegate("#viewID", "click", function() {
-		
-			//Hide Modal
-			$("#modal-default-view").modal("hide");
-			$("#modal-default-view").on('hidden.bs.modal', () => {$("#modal-default-update").modal();});
-			
 		    var dataID = $(this).attr('data-id'); //get the item ID
 			
 			// Clear Maps
@@ -1195,9 +1155,18 @@ $(document).ready(function() {
 		
 	});*/
 	
-	
 	// Initialize Search Dropdown
 	$('.select2').select2();
 	
+	// Add modal-open class on boday tag
+	$("#viewID").click( function(){
+		 setTimeout(function() { 
+			jQuery("body").addClass("modal-open");
+			jQuery("body").css('padding-right', '17px');
+		}, 500);
+	});
+	
 });
+
+
 </script>
