@@ -1,8 +1,4 @@
-*Order List
-	- delete update product qty
-	-update product item
 *Report
-	-Sales (for polishing)
 	-Inventory
 *Inventory
 	-Inventory Counts

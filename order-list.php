@@ -803,7 +803,7 @@ $(document).ready(function() {
 					price = parseInt(price) - parseInt(totalDiscount);
 				}
 				
-				$("#updateprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.salePrice + "</td><td>" + item.qty + "</td><td>" + item.discountAmount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.prodID + " data-id=" + item.orderitemID + " data-name=" + item.qty + "><i class='fas fa-trash'></i></a></td></tr>");
+				$("#updateprodItemTblBody").append("<tr><td>" + item.prodCode + "</td><td>" + item.prodName + "</td><td>" + item.origPrice + "</td><td>" + item.salePrice + "</td><td>" + item.qty + "</td><td>" + item.discountAmount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + item.prodID + " data-id=" + item.orderitemID + " data-name=" + item.qty + " data-updatesaleprice=" + price + "><i class='fas fa-trash'></i></a></td></tr>");
 			});
 		});	
 	}
@@ -936,7 +936,7 @@ $(document).ready(function() {
 				$("#addGrandTotal").val(parseInt(price) + parseInt(curTotal));
 				
 				// Append the new row to the product item table
-				var newRow = "<tr><td>" + selProdCode + "</td><td>" + selprodname + "</td><td>" + addOrigPrice + "</td><td>" + addSalePrice + "</td><td>" + addQty + "</td><td>" + addDiscount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + "><i class='fas fa-trash'></i></a></td></tr>";
+				var newRow = "<tr><td>" + selProdCode + "</td><td>" + selprodname + "</td><td>" + addOrigPrice + "</td><td>" + addSalePrice + "</td><td>" + addQty + "</td><td>" + addDiscount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItem' id=" + selectedProd + " data-addsaleprice=" + price + "><i class='fas fa-trash'></i></a></td></tr>";
 				$("#addprodItemTbl tbody").append(newRow);
 				
 				
@@ -969,6 +969,103 @@ $(document).ready(function() {
 	});
 	
 	
+	
+	//-- Insert Product Item in the Table (Update) --//
+	$("#updateprodItemBtn").click(function(){
+	
+		var prod = document.getElementById('updateProdItemName');
+		var selectedIndex = prod.selectedIndex;
+		var selectedProd = prod.options[selectedIndex].value;
+		var selectedProdText = prod.options[selectedIndex].text;
+		var runbal = prod.options[selectedIndex].title;
+		var addOrigPrice = document.getElementById('updateOrigPrice').value;
+		var addQty = document.getElementById('updateQty').value;
+		var addSalePrice = document.getElementById('updateSalePrice').value;
+		var addDiscount = document.getElementById('updateDiscount').value;
+		var addDiscountedPrice = document.getElementById('updateDiscountedPrice').value;
+		var selprodname = prod.options[selectedIndex].getAttribute("data-name");
+		var selProdCode = prod.options[selectedIndex].getAttribute("data-id");
+            	
+		if (updateprodMap.has(selectedProd)) {
+			errorNotifNoload(selprodname + " has been added already!");
+		} else {
+			if(addOrigPrice == "" || addQty == "" || addSalePrice == "" || addDiscountedPrice == "") {
+				errorNotifNoload("Please enter value on either group item and quantity fields!");
+			} else if (parseInt(runbal) < parseInt(addQty)) {
+				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
+			} else {
+				var runBalTotal = parseInt(runbal) - parseInt(addQty);
+				if (addDiscount == "") {
+					addDiscount = 0;
+				}
+				const values = addOrigPrice +"|"+ addQty + "|" + addSalePrice +"|"+ addDiscount +"|"+ addDiscountedPrice +"|"+ runBalTotal;
+				updateprodMap.set(selectedProd, values);
+				
+				var price = 0;
+				var totalDiscount = 0;
+				if (addSalePrice != "" && addSalePrice != 0) {
+					price = parseInt(addSalePrice) * parseInt(addQty);
+				} else {
+					errorNotifNoload("Please specify the retail/selling price!");
+				}
+				
+				if (addDiscount != "" && addDiscount != 0) {
+					totalDiscount = parseInt(addDiscount) * parseInt(addQty);
+					price = parseInt(price) - parseInt(totalDiscount);
+				}
+				
+				var curTotal = $("#updateGrandTotal").val();
+				
+				$("#updateGrandTotal").val(parseInt(price) + parseInt(curTotal));
+				
+				$("#updateBalance").val(parseInt($("#updateGrandTotal").val()) - parseInt($("#updateAmountPaid").val()));
+				
+				// Append the new row to the product item table
+				/*var newRow = "<tr><td>" + selProdCode + "</td><td>" + selprodname + "</td><td>" + addOrigPrice + "</td><td>" + addSalePrice + "</td><td>" + addQty + "</td><td>" + addDiscount + "</td><td>" + totalDiscount + "</td><td>" + price + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + " data-id=" + + " data-name=" + addQty + " data-updatesaleprice=" + price + "><i class='fas fa-trash'></i></a></td></tr>";
+				$("#updateprodItemTbl tbody").append(newRow);*/
+				
+				// Check and Save if prices are changed
+				$.post( "data/update_prices.php", { prodCode: selProdCode, addOrigPrice: addOrigPrice, Oprice: Oprice, addSalePrice: addSalePrice, Sprice: Sprice, addDiscountedPrice: addDiscountedPrice, Dprice: Dprice }, function(result,status){
+					if (result == 'Success'){
+						//successNotifNoload("success!");
+					} 
+				});
+				
+				//Save Product Item to DB
+				$.post( "data/order_proditem_add_data.php", { orderID: $("#updateID").val(), prodID: selectedProd, origPrice: addOrigPrice, salePrice: addSalePrice, discountedPrice: addDiscountedPrice, discountAmount: addDiscount, qty: addQty, totalprice: price }, function(result,status){
+					if (result == 'Success'){
+						// Load Product List Dropdown
+						reloadProdItemDD();
+						// Load Product List Table
+						reloadProdListTable($("#updateID").val());
+						successNotifNoload("Product Item successfully added!");
+					} 
+					else {
+						errorNotifNoload(result);
+					}
+				});
+				
+				Oprice = "";
+				Sprice = "";
+				Dprice = "";
+				
+				$("#updateOrigPrice").val('');
+				$("#updateQty").val('');
+				$("#updateSalePrice").val('');
+				$("#updateDiscount").val('');
+				$("#updateDiscountedPrice").val('');
+				$("#updateLastUpdateOrig").text('');
+				$("#updateLastUpdateSale").text('');
+				$("#updateLastUpdateDiscount").text('');
+				
+			}
+		}
+		
+		//console.log([...addprodMap.entries()]);
+		
+	});
+	
+	
 	//--- Remove Product Item on the table (Add) ---//	
 	$(document).delegate(".removeprodItem", "click", function() {
 		
@@ -979,7 +1076,8 @@ $(document).ready(function() {
 			//console.log([...addprodMap.entries()]);
 			
 			var curTotal = $("#addGrandTotal").val();
-			$("#addGrandTotal").val(parseInt(curTotal) - parseInt($(this).attr('data-name')));
+			$("#addGrandTotal").val(parseInt(curTotal) - parseInt($(this).attr('data-addsaleprice')));
+			$("#addBalance").val(parseInt($("#addGrandTotal").val()) - parseInt($("#addAmountPaid").val()));
 			
 		}
 			
@@ -1005,6 +1103,10 @@ $(document).ready(function() {
 					errorNotifNoload(result);
 				}
 			});
+			
+			var curTotal = $("#updateGrandTotal").val();
+			$("#updateGrandTotal").val(parseInt(curTotal) - parseInt($(this).attr('data-updatesaleprice')));
+			$("#updateBalance").val(parseInt($("#updateGrandTotal").val()) - parseInt($("#updateAmountPaid").val()));
 		}
 			
 	});
@@ -1097,63 +1199,6 @@ $(document).ready(function() {
 		});
 	});
 	
-	
-	//-- Insert Product Item in the Table (Update) --//
-	/*$("#updateprodItemBtn").click(function(){
-	
-		var prod = document.getElementById('updateProdItemName');
-		var selectedIndex = prod.selectedIndex;
-		var selectedProd = prod.options[selectedIndex].value;
-		var selectedProdText = prod.options[selectedIndex].text;
-		var runbal = parseInt(prod.options[selectedIndex].title);
-		var updateGroup = parseInt(document.getElementById('updateGroup').value);
-		var updateQty = parseInt(document.getElementById('updateQty').value);
-		var selprodname = prod.options[selectedIndex].getAttribute("data-name");
-            
-		if (updateprodMap.has(selectedProd)) {
-			errorNotifNoload(selprodname + " has been added already!");
-		} else {
-			if(updateGroup == "" || updateQty == "") {
-				errorNotifNoload("Please enter value on either group item and quantity fields!");
-			} else if (parseInt(runbal) < (parseInt(updateGroup)*parseInt(updateQty))) {
-				errorNotifNoload("Insufficient remaining balance! Product remaining quantity is "+runbal+".");
-			} else {
-				var runBalTotal = parseInt(runbal) - (parseInt(updateGroup)*parseInt(updateQty));
-				const values = updateGroup +"|"+ updateQty + "|" + runBalTotal +"|"+ selectedProd;
-				updateprodMap.set(selectedProd, values);
-				// Append the new row to the product item table
-				var newRow = "<tr><td>" + selectedProdText + "</td><td>" + selprodname + "</td><td>" + updateGroup + "</td><td>" + updateQty + "</td><td class='btn-group-sm'><a class='btn btn-danger removeprodItemUpdate' id=" + selectedProd + " data-id=" + $("#updateID").val() + "><i class='fas fa-trash'></i></a></td></tr>";
-				$("#updateprodItemTbl tbody").append(newRow);
-				
-				//Save Product Item to DB
-				$.post( "data/proditem_add_data.php", { repackageprodID: $("#updateID").val(), singleprodID: selectedProd, prodGroup: updateGroup, prodQty: updateQty, runBal: runBalTotal }, function(result,status){
-					if (result == 'Success'){
-						// Load Product List Dropdown
-						reloadProdItemDD();
-						// Check balance Repackage
-						checkBalRepackage();
-						// Load Product List Table
-						reloadProdListTable($("#updateID").val());
-						successNotifNoload("Product Item successfully added!");
-					} 
-					else {
-						errorNotifNoload(result);
-					}
-				});
-				
-				$("#updateGroup").val('');
-				let mapSize = updateprodMap.size;
-				if (mapSize > 0) {
-					$("#updateQty").prop("readonly", true);
-				} else {
-					$("#updateQty").val('');
-					$("#updateQty").prop("readonly", false);
-				}
-				
-			}
-		}
-		
-	});*/
 	
 	// Initialize Search Dropdown
 	$('.select2').select2();

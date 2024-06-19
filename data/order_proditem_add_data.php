@@ -4,25 +4,26 @@
 	require_once('../includes/connection.php');
 	require_once('../includes/functions.php');
 
-	$repackageprodID = $_POST['repackageprodID'];
-	$singleprodID = $_POST['singleprodID'];
-	$prodGroup = $_POST['prodGroup'];
-	$prodQty = $_POST['prodQty'];
-	$runBal = $_POST['runBal'];
+	$orderID = $_POST['orderID'];
+	$prodID = $_POST['prodID'];
+	$origPrice = $_POST['origPrice'];
+	$salePrice = $_POST['salePrice'];
+	$discountedPrice = $_POST['discountedPrice'];
+	$discountAmount = $_POST['discountAmount'];
+	$qty = $_POST['qty'];
+	$totalprice = $_POST['totalprice'];
 
-	// Update Running balance of the Repackage Product
-	$sql = "UPDATE tbl_product SET runningBal = {$prodQty} WHERE prodID={$repackageprodID}";
+	// Insert Product item in tbl_orderitem
+	$sql = "INSERT INTO tbl_orderitem (orderID, prodID, origPrice, salePrice, discountedPrice, discountAmount, qty) VALUES ('$orderID', '$prodID', '$origPrice', '$salePrice', '$discountedPrice', '$discountAmount', '$qty')";
 	$result = mysqli_query($connection, $sql);
-	confirm_query($result);
-	
-	$sql = "INSERT INTO tbl_repackageitem (repackage_prodID, single_prodID, prodGroup, prodQty) VALUES ('$repackageprodID', '$singleprodID', '$prodGroup', '$prodQty')";
+				
+	// Update tbl_order grandtotal and balance 
+	$sql = "UPDATE tbl_order SET grandTotal = grandTotal + {$totalprice}, balance = grandTotal - amountPaid WHERE orderID={$orderID}";
 	$result = mysqli_query($connection, $sql);
-	confirm_query($result);
 	
 	// Update Running balance of the Single Product
-	$sql = "UPDATE tbl_product SET runningBal={$runBal} WHERE prodID={$singleprodID}";
+	$sql = "UPDATE tbl_product SET runningBal = runningBal - {$qty} WHERE prodID={$prodID}";
 	$result = mysqli_query($connection, $sql);
-	confirm_query($result);
 				
 	if($result){
 		echo "Success";

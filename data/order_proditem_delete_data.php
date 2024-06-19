@@ -14,18 +14,19 @@
 	$result = mysqli_query($connection, $sql);
 	confirm_query($result);
 	
-	// must calculate the amount to adjust on tbl_order
-	
-	/*$sql = "SELECT count(prodQty) as qty FROM tbl_repackageitem WHERE repackage_prodID = {$rpProdID}";
-	$result = mysqli_query($connection, $sql) ;
-	$data=mysqli_fetch_assoc($result);
+	// Get salePrice and discountAmount from tbl_orderitem
+	$sql = "SELECT salePrice, discountAmount FROM tbl_orderitem WHERE orderitemID = '{$ordItemID}' LIMIT 1";
+	$result = mysqli_query($connection, $sql);
 	confirm_query($result);     
+	$data=mysqli_fetch_assoc($result);
 	
-	if($data['qty'] == 1){
-		$sql = "UPDATE tbl_product SET runningBal = runningBal - {$qty} WHERE prodID={$rpProdID}";
-		$result = mysqli_query($connection, $sql);
-		confirm_query($result);
-	}*/
+	$deductAmount = ($data['salePrice'] * $qty) - ($data['discountAmount'] * $qty);
+	
+	// Update tbl_order Grand Total and Balance
+	$sql = "UPDATE tbl_order SET grandTotal = grandTotal - {$deductAmount}, balance = grandTotal - amountPaid WHERE orderID = '{$ordID}'";
+	$result = mysqli_query($connection, $sql);
+	confirm_query($result);
+	
 	
 	//Delete Product Item
 	$sql = "DELETE FROM tbl_orderitem WHERE orderitemID = '{$ordItemID}' LIMIT 1";

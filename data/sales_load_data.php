@@ -8,7 +8,8 @@
 	$endDate = $_POST['endDate'];
 	
 	$sql = "SELECT ord.*, cus.name,
-			IFNULL((SELECT (ordItem.salePrice - ordItem.origPrice) * ordItem.qty FROM tbl_orderitem as ordItem WHERE ord.orderID=ordItem.orderID LIMIT 1),0) as profit
+			IFNULL((SELECT ((ordItem.salePrice - ordItem.origPrice) * ordItem.qty) - (ordItem.discountAmount * ordItem.qty) FROM tbl_orderitem as ordItem WHERE ord.orderID=ordItem.orderID LIMIT 1),0) as profit,
+            IFNULL((SELECT ordItem.discountAmount * ordItem.qty FROM tbl_orderitem as ordItem WHERE ord.orderID=ordItem.orderID LIMIT 1),0) as discount
 			FROM tbl_order as ord
 			INNER JOIN tbl_customer cus ON ord.customerID=cus.customerID
 			WHERE ord.orderDate BETWEEN '{$startDate}' AND '{$endDate}'

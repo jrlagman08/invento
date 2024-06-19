@@ -15,7 +15,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `invento`
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbl_category` (
   `categoryID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_category`
@@ -51,7 +51,7 @@ INSERT INTO `tbl_category` (`categoryID`, `name`) VALUES
 CREATE TABLE `tbl_classification` (
   `classificationID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_classification`
@@ -74,7 +74,7 @@ INSERT INTO `tbl_classification` (`classificationID`, `name`) VALUES
 CREATE TABLE `tbl_color` (
   `colorID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_color`
@@ -109,7 +109,7 @@ CREATE TABLE `tbl_companyinfo` (
   `country` varchar(50) NOT NULL,
   `logo` varchar(250) NOT NULL,
   `website` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_companyinfo`
@@ -130,7 +130,7 @@ CREATE TABLE `tbl_count` (
   `userID` int NOT NULL,
   `notes` text NOT NULL,
   `isPosted` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_count`
@@ -153,7 +153,7 @@ CREATE TABLE `tbl_countitem` (
   `prodID` int NOT NULL,
   `systemCount` int NOT NULL,
   `count` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_countitem`
@@ -185,7 +185,7 @@ CREATE TABLE `tbl_customer` (
   `econtactPerson` varchar(100) NOT NULL,
   `econtactEmail` varchar(50) NOT NULL,
   `econtactMobile` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_customer`
@@ -213,7 +213,7 @@ INSERT INTO `tbl_customer` (`customerID`, `name`, `email`, `mobile`, `phone`, `a
 CREATE TABLE `tbl_department` (
   `departmentID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_department`
@@ -234,7 +234,7 @@ CREATE TABLE `tbl_image` (
   `imgID` int NOT NULL,
   `prodID` int NOT NULL,
   `path` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_image`
@@ -257,7 +257,7 @@ INSERT INTO `tbl_image` (`imgID`, `prodID`, `path`) VALUES
 CREATE TABLE `tbl_order` (
   `orderID` int NOT NULL,
   `orderDate` datetime NOT NULL,
-  `orderNum` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `orderNum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `customerID` int NOT NULL,
   `userID` int NOT NULL,
   `paymentID` int NOT NULL,
@@ -265,7 +265,7 @@ CREATE TABLE `tbl_order` (
   `amountPaid` decimal(10,0) NOT NULL,
   `grandTotal` decimal(10,0) NOT NULL,
   `balance` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_order`
@@ -293,7 +293,7 @@ CREATE TABLE `tbl_orderitem` (
   `discountedPrice` decimal(10,0) NOT NULL,
   `discountAmount` decimal(10,0) NOT NULL,
   `qty` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_orderitem`
@@ -312,7 +312,7 @@ INSERT INTO `tbl_orderitem` (`orderitemID`, `orderID`, `prodID`, `origPrice`, `s
 CREATE TABLE `tbl_payment` (
   `paymentID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_payment`
@@ -352,7 +352,7 @@ CREATE TABLE `tbl_product` (
   `lastUpdateSalePrice` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastUpdateDiscountedPrice` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `isRepackage` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_product`
@@ -376,7 +376,7 @@ INSERT INTO `tbl_product` (`prodID`, `categoryID`, `subCategoryID`, `prodCode`, 
 CREATE TABLE `tbl_rack` (
   `rackID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_rack`
@@ -399,7 +399,7 @@ CREATE TABLE `tbl_received` (
   `notes` text NOT NULL,
   `isPosted` tinyint(1) NOT NULL,
   `grandTotal` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_received`
@@ -421,7 +421,7 @@ CREATE TABLE `tbl_receiveditem` (
   `prodID` int NOT NULL,
   `origPrice` decimal(10,0) NOT NULL,
   `qty` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_receiveditem`
@@ -444,7 +444,7 @@ CREATE TABLE `tbl_repackageitem` (
   `single_prodID` int NOT NULL,
   `prodGroup` int NOT NULL,
   `prodQty` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_repackageitem`
@@ -467,7 +467,7 @@ INSERT INTO `tbl_repackageitem` (`repackageitemID`, `repackage_prodID`, `single_
 CREATE TABLE `tbl_season` (
   `seasonID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_season`
@@ -488,7 +488,7 @@ CREATE TABLE `tbl_subcategory` (
   `subCategoryID` int NOT NULL,
   `categoryID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_subcategory`
@@ -520,7 +520,7 @@ CREATE TABLE `tbl_supplier` (
   `econtactPerson` varchar(100) NOT NULL,
   `econtactEmail` varchar(50) NOT NULL,
   `econtactMobile` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_supplier`
@@ -544,7 +544,7 @@ CREATE TABLE `tbl_supplieritem` (
   `prodName` varchar(100) NOT NULL,
   `prodDetails` varchar(200) NOT NULL,
   `origPrice` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_supplieritem`
@@ -567,7 +567,7 @@ INSERT INTO `tbl_supplieritem` (`supplieritemID`, `supplierID`, `prodCode`, `pro
 CREATE TABLE `tbl_uom` (
   `uomID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_uom`
@@ -584,12 +584,12 @@ INSERT INTO `tbl_uom` (`uomID`, `name`) VALUES
 
 CREATE TABLE `tbl_user` (
   `userID` int NOT NULL,
-  `email` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `pword` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pword` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `fname` varchar(25) NOT NULL,
-  `lname` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `lname` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `departmentID` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_user`
@@ -608,7 +608,7 @@ INSERT INTO `tbl_user` (`userID`, `email`, `pword`, `fname`, `lname`, `departmen
 CREATE TABLE `tbl_warehouse` (
   `warehouseID` int NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `tbl_warehouse`

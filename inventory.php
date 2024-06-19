@@ -206,11 +206,11 @@ $(document).ready(function() {
              }
 			 obj.forEach(function(item) {
 				 table.row.add([
-					new Date(item.orderDate).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""),
+					new Date(item.dt).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit'}).replace(/,/g, ""),
 					item.prodName,
-					item.paymentref,
-					"",
-					item.qty,
+					item.payref,
+					item.invin,
+					item.invout,
 					""
 				 ]);
 			});

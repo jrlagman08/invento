@@ -63,6 +63,9 @@
                             <th>Order No.</th>
                             <th>Customer</th>
                             <th>Grand Total</th>
+							<th>Amount Paid</th>
+							<th>Balance</th>
+							<th>Discount</th>
                             <th>Total Profit</th>
                         </tr>
                     </thead>
@@ -72,6 +75,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
+							<td></td>
+							<td></td>
+							<td></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -82,6 +88,9 @@
                             <th style="font-weight: bold;">Total:</th>
                             <th></th>
                             <th></th>
+							<th></th>
+							<th></th>
+							<th></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -151,7 +160,7 @@ $(document).ready(function() {
 			  
 			// Total over all pages (Total Profit)
 			var totalP = api
-				.column( 4 )
+				.column( 7 )
 				.data()
 				.reduce( function (a, b) {
 					return intVal(a) + intVal(b);
@@ -159,18 +168,69 @@ $(document).ready(function() {
  
 			// Total over this page (Total Profit)
 			var pageTotalP = api
+				.column( 7, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				
+			// Total over all pages (Total Amount Paid)
+			var totalAP = api
+				.column( 4 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Total Amount Paid)
+			var pageTotalAP = api
 				.column( 4, { page: 'current'} )
 				.data()
 				.reduce( function (a, b) {
 					return intVal(a) + intVal(b);
 				}, 0 );
 
+			// Total over all pages (Total Balance)
+			var totalB = api
+				.column( 5 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Total Balance)
+			var pageTotalB = api
+				.column( 5, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+			
+			// Total over all pages (Total Discount)
+			var totalBal = api
+				.column( 6 )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+ 
+			// Total over this page (Total Discount)
+			var pageTotalBal = api
+				.column( 6, { page: 'current'} )
+				.data()
+				.reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				
 			// Total filtered rows on the selected column (code part added)
 			var sumCol4Filtered = display.map(el => data[el][3]).reduce((a, b) => intVal(a) + intVal(b), 0 );
 		  
 			// Update footer
 			$( api.column( 3 ).footer() ).html(Gtotal); //Grand Total
-			$( api.column( 4 ).footer() ).html(totalP); //Total Profit
+			$( api.column( 4 ).footer() ).html(totalAP); //Amount Paid
+			$( api.column( 5 ).footer() ).html(totalB); //Balance
+			$( api.column( 6 ).footer() ).html(totalBal); //Balance
+			$( api.column( 7 ).footer() ).html(totalP); //Total Profit
 		}
 	});
 	
@@ -198,6 +258,9 @@ $(document).ready(function() {
 					item.orderNum,
 					item.name,
 					item.grandTotal,
+					item.amountPaid,
+					item.balance,
+					item.discount,
 					item.profit
 				 ]);
 			});
