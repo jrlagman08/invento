@@ -31,8 +31,18 @@ DB Name: invento_DB
 DB User: invento_w1lb3rT
 DB Pword: R-Ek!ehxxW@x
 
+DB Name: invento_m1t5u1
+DB User: invento_m1t5u12024
+DB Pword: XhW.Fq!{E8@]
+
 
 https://kounn-omamori.invento.ph/
 
 jrlagman08@gmail.com
+Admin1234
+
+
+https://mitsui.invento.ph/
+
+admin@email.com
 Admin1234
